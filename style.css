@@ -191,6 +191,23 @@ body {
     }
 }
 
+/* Export Mode Fix para html2canvas (Evita que la animación rompa el destello en la foto) */
+.export-mode .dot.current {
+    animation: none !important;
+    transform: scale(2.5) !important;
+    box-shadow: 0 0 15px 5px #ffd700 !important;
+    background-color: #ffd700 !important;
+    z-index: 99 !important;
+}
+
+.export-mode.theme-white .dot.current {
+    animation: none !important;
+    transform: scale(2.5) !important;
+    box-shadow: 0 0 15px 5px #ff3366 !important;
+    background-color: #ff3366 !important;
+    z-index: 99 !important;
+}
+
 /* Groupings */
 .group-decades .dot:nth-child(520n) {
     margin-bottom: 5px;

@@ -183,6 +183,7 @@ document.getElementById('btn-export').addEventListener('click', () => {
         
         const mockUI = document.getElementById('ios-mock-ui');
         mockUI.style.visibility = 'hidden';
+        container.classList.add('export-mode'); // Congela animación para foto
 
         const savedBg = localStorage.getItem('lc_bg') || 'black';
 
@@ -196,6 +197,7 @@ document.getElementById('btn-export').addEventListener('click', () => {
             container.style.borderRadius = originalBorderRadius;
             container.style.border = originalBorder;
             mockUI.style.visibility = 'visible';
+            container.classList.remove('export-mode');
 
         const link = document.createElement('a');
         link.download = `life-calendar-${new Date().toISOString().slice(0,10)}.png`;
