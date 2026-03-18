@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Calendar - iPhone Wallpaper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Vista Previa (El Fondo) -->
+    <div id="wallpaper-container" class="iphone-14-pro-max">
+        <div class="overlay"></div>
+        
+        <!-- Mock UI (Se oculta al exportar) -->
+        <div id="ios-mock-ui" data-html2canvas-ignore="true">
+            <div class="mock-date" id="mock-date">Wed Mar 18</div>
+            <div class="mock-time" id="mock-time">21:19</div>
+            <!-- Espacio reservado para los widgets reales de iOS -->
+            <div id="mock-widgets-space"></div>
+        </div>
+        
+        <header id="wallpaper-header">
+            <h1 id="wallpaper-title">bryan ruzafa gonçalves</h1>
+        </header>
+
+        <section id="grid-container">
+            <div id="life-grid"></div>
+        </section>
+
+        <div id="bottom-content">
+            <section id="manifestation-container">
+                <p id="manifestation-text"></p>
+            </section>
+
+            <section id="quote-container">
+                <p id="motivational-quote">...</p>
+            </section>
+
+            <section id="year-progress-container">
+                <div class="year-progress-info">
+                    <span id="progress-year-label">2026 PROGRESS</span>
+                    <span id="progress-percent">60%</span>
+                </div>
+                <div class="year-progress-track">
+                    <div id="year-progress-fill" style="width: 60%;"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Swipe Indicator (Se oculta al exportar) -->
+        <div id="ios-home-indicator" data-html2canvas-ignore="true"></div>
+    </div>
+
+    <!-- UI de control (Panel de Configuración) -->
+    <div id="ui-controls" class="settings-panel">
+        <h2 class="panel-title">Life Calendar</h2>
+        <p class="panel-subtitle">Your entire life in weeks. Each dot is a week. Memento mori.</p>
+        
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-number" id="weeks-lived-display">1019</span>
+                <span class="stat-label">lived</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="weeks-remaining-display">3661</span>
+                <span class="stat-label">remaining</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>YOUR BIRTHDAY</label>
+            <input type="date" id="input-birthday" value="2006-08-10">
+            <p class="help-text">Your birthday to calculate weeks lived</p>
+        </div>
+
+        <div class="input-group">
+            <label>TITLE</label>
+            <input type="text" id="input-title" value="bryan ruzafa gonçalves">
+        </div>
+
+        <div class="input-group">
+            <label>BACKGROUND</label>
+            <div class="segment-control" id="bg-control">
+                <button class="segment-btn active" data-val="black">Black</button>
+                <button class="segment-btn" data-val="white">White</button>
+                <button class="segment-btn" data-val="match">Match</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>DOT SHAPE</label>
+            <div class="segment-control" id="shape-control">
+                <button class="segment-btn active" data-val="circle">Circle</button>
+                <button class="segment-btn" data-val="square">Square</button>
+                <button class="segment-btn" data-val="rounded">Rounded</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>GROUPING</label>
+            <div class="segment-control" id="group-control">
+                <button class="segment-btn" data-val="none">None</button>
+                <button class="segment-btn" data-val="months">Months</button>
+                <button class="segment-btn active" data-val="decades">Decades</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>FOOTER</label>
+            <div class="segment-control" id="footer-control">
+                <button class="segment-btn" data-val="none">None</button>
+                <button class="segment-btn" data-val="numbers">Numbers</button>
+                <button class="segment-btn active" data-val="quote">Quote</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>OVERRIDE LIVED WEEKS (Optional)</label>
+            <input type="number" id="input-override-weeks" placeholder="Ej: 1019">
+        </div>
+
+        <div class="input-group">
+            <label>FOCUS / MANIFESTATION</label>
+            <input type="text" id="input-manifestation" placeholder="Ej: Building my empire">
+            <p class="help-text">Una sola línea poderosa debajo de tu grid.</p>
+        </div>
+
+        <div class="actions">
+            <button id="btn-save" class="primary-btn">Guardar y Actualizar</button>
+            <button id="btn-export" class="secondary-btn">Descargar Fondo</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
