@@ -85,7 +85,6 @@ function updateUI() {
     // Leer valores de localStorage
     const savedBirthday = localStorage.getItem('lc_birthday') || '2006-08-10';
     const savedTitle = localStorage.getItem('lc_title') || 'bryan ruzafa gonçalves';
-    const savedManifestation = localStorage.getItem('lc_manifestation') || 'CONSTRUYENDO EL IMPERIO';
     const savedOverride = localStorage.getItem('lc_override_weeks') || '';
 
     const savedBg = localStorage.getItem('lc_bg') || 'black';
@@ -96,7 +95,6 @@ function updateUI() {
     // Set inputs
     document.getElementById('input-birthday').value = savedBirthday;
     document.getElementById('input-title').value = savedTitle;
-    document.getElementById('input-manifestation').value = savedManifestation;
     document.getElementById('input-override-weeks').value = savedOverride;
 
     setActiveSegmentValue('bg-control', savedBg);
@@ -116,16 +114,6 @@ function updateUI() {
     document.getElementById('wallpaper-title').textContent = savedTitle;
     document.getElementById('weeks-lived-display').textContent = weeksLived;
     document.getElementById('weeks-remaining-display').textContent = weeksRemaining;
-
-    // Single Focus / Manifestation
-    const manifestContainer = document.getElementById('manifestation-container');
-    const manifestText = document.getElementById('manifestation-text');
-    if (savedManifestation.trim() !== '') {
-        manifestText.textContent = savedManifestation;
-        manifestContainer.style.display = 'block';
-    } else {
-        manifestContainer.style.display = 'none';
-    }
 
     // Year Progress Bar
     updateYearProgress();
@@ -172,7 +160,6 @@ document.getElementById('btn-save').addEventListener('click', () => {
 function saveSettings() {
     localStorage.setItem('lc_birthday', document.getElementById('input-birthday').value);
     localStorage.setItem('lc_title', document.getElementById('input-title').value);
-    localStorage.setItem('lc_manifestation', document.getElementById('input-manifestation').value);
     localStorage.setItem('lc_override_weeks', document.getElementById('input-override-weeks').value);
 
     localStorage.setItem('lc_bg', getActiveSegmentValue('bg-control'));
