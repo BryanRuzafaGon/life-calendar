@@ -171,21 +171,31 @@ function saveSettings() {
 }
 
 document.getElementById('btn-export').addEventListener('click', () => {
-    const container = document.getElementById('wallpaper-container');
-    const oldRadius = container.style.borderRadius;
-    const oldOutline = container.style.outline;
-    
-    container.style.borderRadius = '0px';
-    container.style.outline = 'none';
+        // Preparar para foto
+        const container = document.getElementById('wallpaper-container');
+        const originalTransform = container.style.transform;
+        const originalBorderRadius = container.style.borderRadius;
+        const originalBorder = container.style.border;
+        
+        container.style.transform = 'none';
+        container.style.borderRadius = '0';
+        container.style.border = 'none';
+        
+        const mockUI = document.getElementById('ios-mock-ui');
+        mockUI.style.visibility = 'hidden';
 
-    html2canvas(container, {
-        scale: 3, 
-        backgroundColor: getActiveSegmentValue('bg-control') === 'white' ? '#ffffff' : '#050505',
-        logging: false,
-        useCORS: true
-    }).then(canvas => {
-        container.style.borderRadius = oldRadius;
-        container.style.outline = oldOutline;
+        const savedBg = localStorage.getItem('lc_bg') || 'black';
+
+        html2canvas(container, {
+            scale: 3, // Multiplicador de resolución (430x932) -> 1290x2796
+            useCORS: true,
+            backgroundColor: savedBg === 'white' ? '#FFFFFF' : '#000000'
+        }).then(canvas => {
+            // Restaurar estilo
+            container.style.transform = originalTransform;
+            container.style.borderRadius = originalBorderRadius;
+            container.style.border = originalBorder;
+            mockUI.style.visibility = 'visible';
 
         const link = document.createElement('a');
         link.download = `life-calendar-${new Date().toISOString().slice(0,10)}.png`;

@@ -70,27 +70,27 @@ body {
 
 /* iOS Mock UI */
 #ios-mock-ui {
-    padding-top: 85px; /* iOS Status Bar + Dynamic Island space */
+    padding-top: 60px; /* Dynamic Island clearance */
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     z-index: 2;
 }
 
 .mock-date {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     margin-bottom: -5px;
     opacity: 0.9;
 }
 
 .mock-time {
-    font-size: 96px; /* Exact size to match iOS */
+    font-size: 85px; 
     font-weight: 700;
     letter-spacing: -2px;
 }
 
 #mock-widgets-space {
-    height: 50px; /* Space reserved for real iOS lock screen widgets */
+    height: 48px; /* Space reserved for real iOS lock screen widgets */
     width: 100%;
 }
 
@@ -119,10 +119,14 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Grid del Calendario */
 #life-grid {
     display: grid;
     grid-template-columns: repeat(52, 1fr);
-    gap: 2.5px;
+    gap: 3px;
+    padding: 10px 30px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .dot {
@@ -195,7 +199,7 @@ body {
 /* Bottom Content */
 #bottom-content {
     margin-top: auto;
-    margin-bottom: 50px; /* Space for home indicator */
+    margin-bottom: 100px; /* Safely clears iPhone flashlight and camera shortcuts */
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -266,6 +270,23 @@ body {
     background-color: var(--accent-color);
     border-radius: 10px;
     z-index: 2;
+}
+
+.iphone-14-pro-max {
+    width: 430px; /* Logical iPhone Pro Max width */
+    height: 932px; /* Logical iPhone Pro Max height */
+    background-color: var(--bg-color); /* Changed from --bg-dark to --bg-color */
+    margin: 0 auto;
+    position: relative;
+    border-radius: 40px; /* Simulated device corners */
+    border: 12px solid #111;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Zoom out slightly for PC preview, reset on export */
+    transform: scale(0.8);
+    transform-origin: top center;
+    transition: background-color 0.3s ease;
 }
 
 /* Settings Panel (UI Controls) */
