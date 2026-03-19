@@ -229,6 +229,10 @@ document.querySelectorAll('.nav-item').forEach(btn => {
         const targetView = document.getElementById(targetId);
         targetView.classList.remove('hidden');
         targetView.classList.add('active');
+        
+        if (targetId === 'view-stats') {
+            loadJournalArchive();
+        }
     });
 });
 
@@ -269,9 +273,9 @@ function initManifestationEngine() {
 
     // Load saved goal
     const goalEl = document.getElementById('manifest-goal');
-    goalEl.textContent = localStorage.getItem('manifest_goal') || 'Building my empire';
+    goalEl.value = localStorage.getItem('manifest_goal') || 'Building my empire';
     goalEl.addEventListener('input', () => {
-        localStorage.setItem('manifest_goal', goalEl.textContent);
+        localStorage.setItem('manifest_goal', goalEl.value);
     });
 
     loadTodayManifestations();
@@ -388,18 +392,24 @@ function renderStreakCalendar(completedDays, todayStr) {
     if (!container) return;
     container.innerHTML = '';
     
-    const daysOfWeek = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+    // Fixed Spanish Week: L M X J V S D
+    const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
     const today = new Date();
     
-    // Render last 7 days ending today
-    for (let i = 6; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(d.getDate() - i);
+    // Calculate Monday of the current week
+    const currentDayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday...
+    const diffToMonday = currentDayOfWeek === 0 ? -6 : 1 - currentDayOfWeek;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + diffToMonday);
+    
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
         const dateStr = d.toISOString().slice(0, 10);
-        const dayLetter = daysOfWeek[d.getDay()];
         
         const isDone = completedDays.includes(dateStr);
         const isToday = dateStr === todayStr;
+        const isFuture = d.toISOString().slice(0, 10) > todayStr;
         
         let circleClass = 'streak-circle';
         let innerHtml = '';
@@ -413,11 +423,83 @@ function renderStreakCalendar(completedDays, todayStr) {
         
         container.innerHTML += `
             <div class="streak-day">
-                <span class="streak-letter" style="${isToday ? 'color:#fff' : ''}">${dayLetter}</span>
-                <div class="${circleClass}">${innerHtml}</div>
+                <span class="streak-letter" style="${isToday ? 'color:#fff' : ''}">${daysOfWeek[i]}</span>
+                <div class="${circleClass}" style="${isFuture ? 'opacity: 0.2' : ''}">${innerHtml}</div>
             </div>
         `;
     }
+}
+
+// ============================================
+// ARCHIVO / JOURNAL LOGIC
+// ============================================
+
+function loadJournalArchive() {
+    const container = document.getElementById('journal-archive');
+    if (!container) return;
+    
+    // Extract all manifest_369_YYYY-MM-DD keys
+    const entries = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('manifest_369_')) {
+            const dateStr = key.replace('manifest_369_', '');
+            entries.push({ date: dateStr, data: JSON.parse(localStorage.getItem(key)) });
+        }
+    }
+    
+    if (entries.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#666; margin-top:20px;">Aún no hay días conquistados.<br>El camino empieza hoy.</p>';
+        return;
+    }
+    
+    // Sort descending by date
+    entries.sort((a, b) => b.date.localeCompare(a.date));
+    const completedDays = JSON.parse(localStorage.getItem('manifest_completed_days') || '[]');
+    
+    container.innerHTML = '';
+    let dayCounter = entries.length;
+    
+    entries.forEach((entry) => {
+        const isDone = completedDays.includes(entry.date);
+        
+        // Formatting options for Spanish Date
+        const fDateParts = new Date(entry.date).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        
+        const card = document.createElement('div');
+        card.className = 'journal-card';
+        
+        let html = `
+            <div class="journal-card-header" onclick="this.nextElementSibling.classList.toggle('expanded')">
+                <div>
+                    <div style="font-size: 10px; color: #888; text-transform: uppercase;">Día Documentado</div>
+                    <div class="journal-date">${fDateParts}</div>
+                </div>
+                <div class="journal-status ${isDone ? 'status-done' : 'status-missed'}">
+                    ${isDone ? '🔥 369 COMPLETO' : 'INCOMPLETO'}
+                </div>
+            </div>
+            <div class="journal-details">
+        `;
+        
+        ['morning', 'afternoon', 'night'].forEach(period => {
+            const label = period === 'morning' ? 'Mañana' : (period === 'afternoon' ? 'Tarde' : 'Noche');
+            html += `<div class="journal-section"><h4>${label}</h4>`;
+            let hasData = false;
+            entry.data[period].forEach((ph, idx) => {
+                if (ph.trim()) {
+                    html += `<div class="journal-text">"${ph}"</div>`;
+                    hasData = true;
+                }
+            });
+            if(!hasData) html += `<div class="journal-text" style="color:#555">Sin registro.</div>`;
+            html += `</div>`;
+        });
+        
+        html += `</div>`;
+        card.innerHTML = html;
+        container.appendChild(card);
+    });
 }
 
 // Ensure streak UI updates on load

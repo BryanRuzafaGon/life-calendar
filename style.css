@@ -108,10 +108,25 @@ body {
     font-weight: 600;
 }
 
-/* Temporal Manifest Styles */
-.manifest-header { padding: 40px 20px; text-align: center; width: 100%; }
+.manifest-header { padding: 40px 20px 20px; text-align: center; width: 100%; }
 #manifest-name { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
-#manifest-goal { font-size: 16px; color: #888; margin-bottom: 15px; outline: none; }
+
+.goal-input {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    font-family: inherit;
+    transition: color 0.3s ease;
+}
+.goal-input:focus {
+    outline: none;
+    color: #fff;
+}
+
 .streak-badge { display: inline-block; background: #222; padding: 8px 15px; border-radius: 20px; font-size: 14px; font-weight: 800; color: #ffd700; }
 .method-369-container { width: 100%; padding: 0 20px; text-align: center; }
 .method-subtitle { font-size: 13px; color: #888; margin-top: 5px; }
@@ -668,3 +683,53 @@ button:hover {
     border-color: #fff;
     border-style: dashed;
 }
+
+/* Journal / Stats Styles */
+.stats-header { text-align: center; padding: 40px 20px 20px; }
+.stats-header h2 { font-weight: 800; font-size: 24px; }
+.stats-header p { color: #666; font-size: 14px; margin-top: 5px; }
+
+.journal-container {
+    width: 100%;
+    padding: 0 20px 100px; /* space for bottom nav */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.journal-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.journal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.journal-date { font-weight: 800; font-size: 16px; color: #fff; text-transform: capitalize; }
+.journal-status { font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+.status-done { background: rgba(255, 215, 0, 0.1); color: #ffd700; }
+.status-missed { background: rgba(255, 51, 102, 0.1); color: #ff3366; }
+
+.journal-details {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #333;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.journal-details.expanded {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.journal-section h4 { font-size: 11px; color: #888; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.journal-text { font-size: 14px; color: #ccc; margin-bottom: 5px; padding-left: 10px; border-left: 2px solid #333; font-style: italic; }

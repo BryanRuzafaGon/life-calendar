@@ -26,7 +26,7 @@
         <section id="view-manifest" class="view-panel active">
             <header class="manifest-header">
                 <h1 id="manifest-name">Bryan Ruzafa Gonçalves</h1>
-                <p id="manifest-goal" contenteditable="true" spellcheck="false">Building my empire</p>
+                <input type="text" id="manifest-goal" class="goal-input" placeholder="Tu gran meta..." spellcheck="false">
                 <div class="streak-badge">🔥 <span id="streak-count">0</span> DÍAS</div>
                 
                 <div class="streak-calendar" id="streak-calendar">
@@ -65,7 +65,7 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
-                    <button id="btn-enable-notifications" class="secondary-btn" style="border-radius: 20px; font-size: 11px; padding: 12px 25px; border border-color: #333;">🔔 Activar Alertas 369</button>
+                    <button id="btn-enable-notifications" class="secondary-btn" style="border-radius: 20px; font-size: 11px; padding: 12px 25px; border: 1px solid #333;">🔔 Activar Alertas 369</button>
                     <p style="font-size: 10px; color: #555; margin-top: 8px;">(Instala la WebApp en tu inicio del iPhone primero)</p>
                 </div>
             </div>
@@ -188,11 +188,14 @@
     </div>
         </section>
 
-        <!-- ===== TAB 3: STATS ===== -->
+        <!-- ===== TAB 3: STATS / HISTORIAL ===== -->
         <section id="view-stats" class="view-panel hidden">
-            <div style="padding: 40px; text-align: center; color: #666;">
-                <h2>ESTADÍSTICAS</h2>
-                <p>(En construcción...)</p>
+            <div class="stats-header">
+                <h2>EL ARCHIVO</h2>
+                <p>Tu historial estoico de disciplina.</p>
+            </div>
+            <div id="journal-archive" class="journal-container">
+                <!-- JS renderiza el historial aquí -->
             </div>
         </section>
 
