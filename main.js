@@ -211,3 +211,234 @@ loadQuotes();
 updateUI();
 updateMockClock();
 setInterval(updateMockClock, 30000);
+
+// PWA Navigation Logic
+document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Update bottom bar highlighting
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Show correct view
+        const targetId = btn.getAttribute('data-target');
+        document.querySelectorAll('.view-panel').forEach(v => {
+            v.classList.remove('active');
+            v.classList.add('hidden');
+        });
+        
+        const targetView = document.getElementById(targetId);
+        targetView.classList.remove('hidden');
+        targetView.classList.add('active');
+    });
+});
+
+// ============================================
+// 369 MANIFESTATION LOGIC
+// ============================================
+
+const TIME_LOCKS = {
+    morning: { hour: 6, min: 0, count: 3 },
+    afternoon: { hour: 14, min: 0, count: 6 },
+    night: { hour: 21, min: 15, count: 9 }
+};
+
+function getTodayKey() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function initManifestationEngine() {
+    // Generate input fields dynamically
+    Object.keys(TIME_LOCKS).forEach(period => {
+        const container = document.getElementById(`inputs-${period}`);
+        if (!container) return;
+        
+        container.innerHTML = '';
+        for (let i = 0; i < TIME_LOCKS[period].count; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'manifest-input';
+            input.placeholder = `Intención ${i+1}...`;
+            input.dataset.period = period;
+            input.dataset.index = i;
+            
+            // Save on type
+            input.addEventListener('input', () => saveManifestation());
+            container.appendChild(input);
+        }
+    });
+
+    // Load saved goal
+    const goalEl = document.getElementById('manifest-goal');
+    goalEl.textContent = localStorage.getItem('manifest_goal') || 'Building my empire';
+    goalEl.addEventListener('input', () => {
+        localStorage.setItem('manifest_goal', goalEl.textContent);
+    });
+
+    loadTodayManifestations();
+    checkTimeLocks();
+    setInterval(checkTimeLocks, 60000); // Check locks every minute
+}
+
+function checkTimeLocks() {
+    const now = new Date();
+    const currentMins = now.getHours() * 60 + now.getMinutes();
+
+    Object.keys(TIME_LOCKS).forEach(period => {
+        const lockSettings = TIME_LOCKS[period];
+        const unlockMins = lockSettings.hour * 60 + lockSettings.min;
+        const blockEl = document.getElementById(`block-${period}`);
+        const statusEl = blockEl.querySelector('.lock-status');
+        
+        if (currentMins >= unlockMins) {
+            blockEl.classList.remove('locked');
+            statusEl.textContent = 'ABIERTO';
+            statusEl.style.color = '#ffd700';
+            statusEl.style.background = 'rgba(255, 215, 0, 0.1)';
+        } else {
+            blockEl.classList.add('locked');
+            statusEl.textContent = `Bloqueado hasta ${String(lockSettings.hour).padStart(2,'0')}:${String(lockSettings.min).padStart(2,'0')}`;
+            statusEl.style.color = '#666';
+            statusEl.style.background = '#222';
+        }
+    });
+}
+
+function saveManifestation() {
+    const today = getTodayKey();
+    const data = { morning: [], afternoon: [], night: [] };
+    
+    document.querySelectorAll('.manifest-input').forEach(input => {
+        data[input.dataset.period][input.dataset.index] = input.value;
+    });
+    
+    localStorage.setItem(`manifest_369_${today}`, JSON.stringify(data));
+    checkDailyCompletion();
+}
+
+function loadTodayManifestations() {
+    const today = getTodayKey();
+    const saved = localStorage.getItem(`manifest_369_${today}`);
+    if (saved) {
+        const data = JSON.parse(saved);
+        document.querySelectorAll('.manifest-input').forEach(input => {
+            if (data[input.dataset.period] && data[input.dataset.period][input.dataset.index]) {
+                input.value = data[input.dataset.period][input.dataset.index];
+            }
+        });
+    }
+}
+
+function checkDailyCompletion() {
+    // Check if ALL 18 inputs are filled
+    const allFilled = Array.from(document.querySelectorAll('.manifest-input')).every(input => input.value.trim().length > 0);
+    
+    const today = getTodayKey();
+    const completedDays = JSON.parse(localStorage.getItem('manifest_completed_days') || '[]');
+    
+    if (allFilled && !completedDays.includes(today)) {
+        completedDays.push(today);
+        localStorage.setItem('manifest_completed_days', JSON.stringify(completedDays));
+        // Todo: Recalculate Streak
+    } else if (!allFilled && completedDays.includes(today)) {
+        // If they delete text
+        const index = completedDays.indexOf(today);
+        completedDays.splice(index, 1);
+        localStorage.setItem('manifest_completed_days', JSON.stringify(completedDays));
+    }
+    
+    updateStreakUI();
+}
+
+function updateStreakUI() {
+    const completedDays = JSON.parse(localStorage.getItem('manifest_completed_days') || '[]');
+    const today = new Date();
+    const todayStr = getTodayKey();
+    
+    let currentStreak = 0;
+    
+    // Sort array
+    completedDays.sort().reverse();
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yestStr = yesterday.toISOString().slice(0, 10);
+    
+    if (completedDays.length > 0) {
+        if (completedDays[0] === todayStr || completedDays[0] === yestStr) {
+            currentStreak = 1;
+            let checkDate = new Date(completedDays[0]);
+            
+            for (let i = 1; i < completedDays.length; i++) {
+                checkDate.setDate(checkDate.getDate() - 1);
+                if (completedDays[i] === checkDate.toISOString().slice(0, 10)) {
+                    currentStreak++;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    
+    document.getElementById('streak-count').textContent = currentStreak;
+    renderStreakCalendar(completedDays, todayStr);
+}
+
+function renderStreakCalendar(completedDays, todayStr) {
+    const container = document.getElementById('streak-calendar');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    const daysOfWeek = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+    const today = new Date();
+    
+    // Render last 7 days ending today
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0, 10);
+        const dayLetter = daysOfWeek[d.getDay()];
+        
+        const isDone = completedDays.includes(dateStr);
+        const isToday = dateStr === todayStr;
+        
+        let circleClass = 'streak-circle';
+        let innerHtml = '';
+        
+        if (isDone) {
+            circleClass += ' done';
+            innerHtml = '🔥';
+        } else if (isToday) {
+            circleClass += ' today-pending';
+        }
+        
+        container.innerHTML += `
+            <div class="streak-day">
+                <span class="streak-letter" style="${isToday ? 'color:#fff' : ''}">${dayLetter}</span>
+                <div class="${circleClass}">${innerHtml}</div>
+            </div>
+        `;
+    }
+}
+
+// Ensure streak UI updates on load
+const originalInit = initManifestationEngine;
+initManifestationEngine = function() {
+    originalInit();
+    updateStreakUI();
+};
+
+document.getElementById('btn-enable-notifications')?.addEventListener('click', async () => {
+    if (!('Notification' in window)) {
+        alert("Tu dispositivo no soporta Notificaciones Web Push.");
+        return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+        alert("¡Sinergia Creada! 🔔 Tu PWA ahora tiene permisos para avisarte en tus checkpoints de poder (06:00, 14:00 y 21:15). Mantén la App abierta o mínimamente en segundo plano para que el Worker pueda avisarte.");
+    } else {
+        alert("Permiso denegado. No te llegarán alertas.");
+    }
+});
+
+// Call init at the end
+initManifestationEngine();

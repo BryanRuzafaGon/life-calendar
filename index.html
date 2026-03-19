@@ -2,16 +2,79 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Calendar - iPhone Wallpaper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Life OS</title>
+
+    <!-- PWA Setup -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Life OS">
+    <meta name="theme-color" content="#0a0a0a">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Vista Previa (El Fondo) -->
-    <div id="wallpaper-container" class="iphone-14-pro-max">
+
+    <!-- APP CONTAINER -->
+    <main id="app-container">
+
+        <!-- ===== TAB 1: MANIFESTO ===== -->
+        <section id="view-manifest" class="view-panel active">
+            <header class="manifest-header">
+                <h1 id="manifest-name">Bryan Ruzafa Gonçalves</h1>
+                <p id="manifest-goal" contenteditable="true" spellcheck="false">Building my empire</p>
+                <div class="streak-badge">🔥 <span id="streak-count">0</span> DÍAS</div>
+                
+                <div class="streak-calendar" id="streak-calendar">
+                    <!-- JS renders 7 days -->
+                </div>
+            </header>
+
+            <div class="method-369-container">
+                <h2>EL MÉTODO 369</h2>
+                <p class="method-subtitle">Escribe tu intención 3 veces por la mañana, 6 por la tarde y 9 por la noche (21:15).</p>
+                
+                <div id="blocks-container">
+                    <div class="block-section locked" id="block-morning">
+                        <div class="block-header">
+                            <h3>🌅 MAÑANA (3)</h3>
+                            <span class="lock-status">Bloqueado hasta 06:00</span>
+                        </div>
+                        <div class="inputs-container" id="inputs-morning"></div>
+                    </div>
+                    
+                    <div class="block-section locked" id="block-afternoon">
+                        <div class="block-header">
+                            <h3>🌇 TARDE (6)</h3>
+                            <span class="lock-status">Bloqueado hasta 14:00</span>
+                        </div>
+                        <div class="inputs-container" id="inputs-afternoon"></div>
+                    </div>
+                    
+                    <div class="block-section locked" id="block-night">
+                        <div class="block-header">
+                            <h3>🌌 NOCHE (9)</h3>
+                            <span class="lock-status">Bloqueado hasta 21:15</span>
+                        </div>
+                        <div class="inputs-container" id="inputs-night"></div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button id="btn-enable-notifications" class="secondary-btn" style="border-radius: 20px; font-size: 11px; padding: 12px 25px; border border-color: #333;">🔔 Activar Alertas 369</button>
+                    <p style="font-size: 10px; color: #555; margin-top: 8px;">(Instala la WebApp en tu inicio del iPhone primero)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TAB 2: WALLPAPER GENERATOR ===== -->
+        <section id="view-wallpaper" class="view-panel hidden">
+            <!-- Vista Previa (El Fondo) -->
+            <div id="wallpaper-container" class="iphone-14-pro-max">
         <div class="overlay"></div>
         
         <!-- Mock UI (Se hace invisible al exportar pero mantiene el espacio) -->
@@ -123,8 +186,42 @@
             <button id="btn-export" class="secondary-btn">Descargar Fondo</button>
         </div>
     </div>
+        </section>
+
+        <!-- ===== TAB 3: STATS ===== -->
+        <section id="view-stats" class="view-panel hidden">
+            <div style="padding: 40px; text-align: center; color: #666;">
+                <h2>ESTADÍSTICAS</h2>
+                <p>(En construcción...)</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav id="bottom-nav">
+        <button class="nav-item active" data-target="view-manifest">
+            <span class="nav-icon">🎯</span>
+            <span class="nav-label">Manifiesto</span>
+        </button>
+        <button class="nav-item" data-target="view-wallpaper">
+            <span class="nav-icon">🖼️</span>
+            <span class="nav-label">Fondo</span>
+        </button>
+        <button class="nav-item" data-target="view-stats">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Stats</span>
+        </button>
+    </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="main.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW ref:', err));
+            });
+        }
+    </script>
 </body>
 </html>
