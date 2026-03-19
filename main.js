@@ -273,7 +273,7 @@ function initManifestationEngine() {
 
     // Load saved goal
     const goalEl = document.getElementById('manifest-goal');
-    goalEl.value = localStorage.getItem('manifest_goal') || 'Building my empire';
+    goalEl.value = localStorage.getItem('manifest_goal') || 'Ser DJ referente nacional y tener mi Honda Civic Type R';
     goalEl.addEventListener('input', () => {
         localStorage.setItem('manifest_goal', goalEl.value);
     });
@@ -286,6 +286,7 @@ function initManifestationEngine() {
 function checkTimeLocks() {
     const now = new Date();
     const currentMins = now.getHours() * 60 + now.getMinutes();
+    const todayStr = getTodayKey();
 
     Object.keys(TIME_LOCKS).forEach(period => {
         const lockSettings = TIME_LOCKS[period];
@@ -298,6 +299,12 @@ function checkTimeLocks() {
             statusEl.textContent = 'ABIERTO';
             statusEl.style.color = '#ffd700';
             statusEl.style.background = 'rgba(255, 215, 0, 0.1)';
+            
+            // Check Notifications!
+            if (checkShouldNotify(period, todayStr)) {
+                triggerMotivationNotification(period);
+            }
+            
         } else {
             blockEl.classList.add('locked');
             statusEl.textContent = `Bloqueado hasta ${String(lockSettings.hour).padStart(2,'0')}:${String(lockSettings.min).padStart(2,'0')}`;
@@ -509,16 +516,108 @@ initManifestationEngine = function() {
     updateStreakUI();
 };
 
+// ============================================
+// NOTIFICATION & TOAST ENGINE
+// ============================================
+
+const NOTI_MESSAGES = {
+    morning: [
+        "Despierta. El Civic Type R no se va a conducir solo. Plasma tus 3 metas. 🏎️",
+        "Buenos días, referente nacional. Arranca el día con foco puro. 🎧",
+        "Cada día que cumples estás más cerca de reventar la pista. Escribe las 3. 🔥",
+        "Tu imperio empieza en la mañana. Sella tu destino 3 veces. 🌅",
+        "Mete primera marcha hoy. 3 intenciones para programar tu éxito inminente."
+    ],
+    afternoon: [
+        "Mitad del día. Mantén la frecuencia alta, futuro DJ Top Nacional. 🎵",
+        "No bajes el ritmo. Tu Honda Civic te espera en la meta. Entra y refuerza tu mente (6).",
+        "Tu imperio se construye en las horas en que los demás descansan. Adelante.",
+        "6 veces. Recuérdale al subconsciente quién va a liderar la escena de este país.",
+        "Que tu racha no muera. Afianza tu tarde con tus 6 manifestaciones de poder de fuego."
+    ],
+    night: [
+        "Hora de cerrar el día. Escribe 9 veces tu destino y siente ese volante del Type R.",
+        "Antes de dormir, sella tu racha 🔥. 9 intenciones para consagrarte en la cima.",
+        "El universo escucha en el silencio. Completa el ciclo 3-6-9 y apaga la mesa de mezclas como un rey.",
+        "Tus sueños ya son realidad. 9 manifestaciones directas para grabar el Type R en tu mente libre.",
+        "Último empujón estoico. No dejes que la disciplina flaquee hoy."
+    ]
+};
+
+function isPeriodCompleted(period, todayStr) {
+    const saved = localStorage.getItem(`manifest_369_${todayStr}`);
+    if (!saved) return false;
+    const data = JSON.parse(saved);
+    if (!data[period]) return false;
+    // Returns true if array is completely filled with text
+    return data[period].length === TIME_LOCKS[period].count && data[period].every(str => str.trim().length > 0);
+}
+
+function checkShouldNotify(period, todayStr) {
+    if (isPeriodCompleted(period, todayStr)) return false; 
+    
+    const notifiedKey = `notified_${todayStr}_${period}`;
+    if (localStorage.getItem(notifiedKey)) return false; 
+    
+    return true;
+}
+
+function triggerMotivationNotification(period) {
+    const todayStr = getTodayKey();
+    localStorage.setItem(`notified_${todayStr}_${period}`, 'true');
+    
+    const msgs = NOTI_MESSAGES[period];
+    const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+    const title = `Foco 369: ${period === 'morning' ? 'Mañana' : period === 'afternoon' ? 'Tarde' : 'Noche'}`;
+    
+    // UI Toast
+    showToast(title, randomMsg);
+    
+    // Browser Native Push (If granted)
+    if (window.Notification && Notification.permission === 'granted') {
+        new Notification(title, {
+            body: randomMsg,
+            icon: 'https://cdn-icons-png.flaticon.com/512/3233/3233508.png'
+        });
+    }
+}
+
+function showToast(title, message) {
+    const container = document.getElementById('toast-container');
+    if(!container) return;
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `
+        <div class="toast-icon">🔥</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div>${message}</div>
+        </div>
+    `;
+    container.appendChild(toast);
+    
+    // Play subtle ding if possible? 
+    // Wait for the next tick to add 'show' class to trigger CSS transition
+    setTimeout(() => toast.classList.add('show'), 50);
+    
+    // Auto remove after 7 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400); // 400ms is the CSS animation duration
+    }, 7000);
+}
+
 document.getElementById('btn-enable-notifications')?.addEventListener('click', async () => {
     if (!('Notification' in window)) {
-        alert("Tu dispositivo no soporta Notificaciones Web Push.");
+        alert("Tu dispositivo no soporta Notificaciones Web Push de fondo.");
         return;
     }
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
-        alert("¡Sinergia Creada! 🔔 Tu PWA ahora tiene permisos para avisarte en tus checkpoints de poder (06:00, 14:00 y 21:15). Mantén la App abierta o mínimamente en segundo plano para que el Worker pueda avisarte.");
+        alert("¡Sinergia Creada! 🔔 Mantén la app en tus pestañas recientes o actívala en tu pantalla de inicio. Te mandaré ráfagas de poder directamente a tus notificaciones.");
     } else {
-        alert("Permiso denegado. No te llegarán alertas.");
+        alert("Permiso denegado. Aún así vibrarás en la app.");
     }
 });
 
