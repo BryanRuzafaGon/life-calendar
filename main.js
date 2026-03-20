@@ -33,9 +33,32 @@ function renderGrid(weeksLived, totalWeeks) {
     const grid = document.getElementById('life-grid');
     grid.innerHTML = '';
     
+    // Use 52 columns = one column per year visually
+    const COLS = 52;
+    const ROWS = Math.ceil(totalWeeks / COLS);
+    
+    // Calculate available space from the container
+    const container = document.getElementById('grid-container');
+    const availW = container.clientWidth || 340;
+    const availH = container.clientHeight || 356;
+    
+    // Fit dots with 1px gap so they fill evenly
+    const dotW = Math.floor((availW - 20) / COLS); // 20px padding
+    const dotH = Math.floor((availH - 20) / ROWS);
+    const dotSize = Math.max(2, Math.min(dotW, dotH) - 1);
+    const gap = 1;
+    
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
+    grid.style.gap = `${gap}px`;
+    grid.style.padding = '10px';
+    
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
+        dot.style.width = `${dotSize}px`;
+        dot.style.height = `${dotSize}px`;
+        
         if (i < weeksLived) {
             dot.classList.add('lived');
         } else if (i === weeksLived) {

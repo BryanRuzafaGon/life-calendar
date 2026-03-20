@@ -910,18 +910,19 @@ body {
 #wallpaper-title {
     font-family: 'Outfit', sans-serif;
     font-weight: 300;
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 3px;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.78) !important;
     text-transform: lowercase;
+    -webkit-text-fill-color: rgba(255,255,255,0.78);
+    background: none;
 }
 
-/* Life grid */
 #grid-container {
     position: absolute;
-    top: 326px;
+    top: 328px;
     left: 0; right: 0;
-    bottom: 170px;  /* Bottom safe zone buffer */
+    bottom: 165px;
     z-index: 2;
     display: flex;
     align-items: center;
@@ -930,12 +931,8 @@ body {
 }
 
 #life-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    gap: 2px;
-    padding: 5px;
+    /* grid template is set dynamically by JS */
+    flex-shrink: 0;
 }
 
 /* Life dots */
