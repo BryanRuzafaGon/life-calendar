@@ -916,7 +916,7 @@ body {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff;
     background: none;
-    text-transform: uppercase;
+    text-transform: capitalize;
     margin-bottom: 3px;
     text-shadow: 0 0 10px rgba(255,255,255,0.2);
 }

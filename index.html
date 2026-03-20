@@ -130,9 +130,12 @@
                 </div>
                 </div>
 
-                <div style="text-align: center; margin-top: 40px;">
-                    <button id="btn-enable-notifications" class="secondary-btn" style="border-radius: 20px; font-size: 11px; padding: 12px 25px; border: 1px solid #333;">🔔 Activar Alertas 369</button>
-                    <p style="font-size: 10px; color: #555; margin-top: 8px;">(Instala la WebApp en tu inicio del iPhone primero)</p>
+                <div style="text-align: center; margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <button id="btn-beast-mode" class="primary-btn" style="width: 100%; max-width: 300px; font-weight: 800; letter-spacing: 1px; margin-bottom: 5px;">🔥 MODO BESTIA (FOCUS)</button>
+                    <div>
+                        <button id="btn-enable-notifications" class="secondary-btn" style="border-radius: 20px; font-size: 11px; padding: 12px 25px; border: 1px solid #333;">🔔 Activar Alertas 369</button>
+                    </div>
+                    <p style="font-size: 10px; color: #555; margin-top: 4px;">(Instala la WebApp en tu inicio del iPhone primero)</p>
                 </div>
             </div>
         </section>
@@ -517,5 +520,18 @@
             });
         }
     </script>
+
+    <!-- BEAST MODE OVERLAY -->
+    <div id="beast-mode-overlay" class="hidden" style="position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <h2 style="color: #666; font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; text-transform: uppercase;">Modo Bestia</h2>
+        <div id="beast-timer-display" style="font-family: 'Outfit', sans-serif; font-size: 90px; font-weight: 200; color: #fff; letter-spacing: -2px; margin-bottom: 60px;">60:00</div>
+        
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            <button id="btn-beast-start" style="background: #fff; color: #000; border: none; padding: 15px 40px; border-radius: 30px; font-weight: 800; font-size: 16px;">START</button>
+            <button id="btn-beast-pause" style="background: #2a2a2a; color: #fff; border: 1px solid #444; padding: 15px 40px; border-radius: 30px; font-weight: 800; font-size: 16px;">PAUSE</button>
+        </div>
+        
+        <button id="btn-beast-exit" style="position: absolute; bottom: 50px; background: transparent; border: none; color: #555; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Abandonar</button>
+    </div>
 </body>
 </html>

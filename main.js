@@ -54,8 +54,9 @@ function renderGrid(weeksLived, totalWeeks) {
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
-        dot.style.width = '100%'; // Fill grid column
-        dot.style.height = `${dotW}px`; // Make it square
+        dot.style.width = `${dotW}px`; // Exact square
+        dot.style.height = `${dotW}px`; // Exact square
+        dot.style.borderRadius = '50%'; // Make dots perfectly round
         
         if (i < weeksLived) {
             dot.classList.add('lived');
@@ -65,14 +66,20 @@ function renderGrid(weeksLived, totalWeeks) {
             dot.classList.add('future');
         }
         
-        // Decade Dividers (bottom border on the last year of every decade)
-        const yearIndex = Math.floor(i / 52);
-        if (yearIndex > 0 && yearIndex % 10 === 9) {
-            dot.style.borderBottom = '2px solid rgba(255,255,255,0.7)';
-            dot.style.marginBottom = '6px';
-        }
-        
         grid.appendChild(dot);
+        
+        // Decade Dividers (bottom border on the last year of every decade)
+        const isEndOfWeek = (i + 1) % 52 === 0;
+        const yearIndex = Math.floor((i + 1) / 52);
+        
+        if (isEndOfWeek && yearIndex > 0 && yearIndex % 10 === 0 && i < totalWeeks - 1) {
+            const divider = document.createElement('div');
+            divider.style.gridColumn = '1 / -1';
+            divider.style.height = '1px';
+            divider.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            divider.style.margin = '3px 0';
+            grid.appendChild(divider);
+        }
     }
 }
 
@@ -1495,4 +1502,50 @@ function renderHeatmap() {
 
 // Ensure the heatmap renders at startup
 renderHeatmap();
+
+// ============================================
+// BEAST MODE (FOCUS TIMER)
+// ============================================
+let beastTimerInterval = null;
+let beastTimeRemaining = 60 * 60; // 60 minutes default
+
+function formatBeastTime(seconds) {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+}
+
+function stopBeastTimer() {
+    if (beastTimerInterval) {
+        clearInterval(beastTimerInterval);
+        beastTimerInterval = null;
+    }
+}
+
+document.getElementById('btn-beast-mode')?.addEventListener('click', () => {
+    document.getElementById('beast-mode-overlay').classList.remove('hidden');
+});
+
+document.getElementById('btn-beast-exit')?.addEventListener('click', () => {
+    stopBeastTimer();
+    beastTimeRemaining = 60 * 60;
+    document.getElementById('beast-timer-display').textContent = formatBeastTime(beastTimeRemaining);
+    document.getElementById('beast-mode-overlay').classList.add('hidden');
+});
+
+document.getElementById('btn-beast-start')?.addEventListener('click', () => {
+    if (beastTimerInterval) return;
+    beastTimerInterval = setInterval(() => {
+        if (beastTimeRemaining > 0) {
+            beastTimeRemaining--;
+            document.getElementById('beast-timer-display').textContent = formatBeastTime(beastTimeRemaining);
+        } else {
+            stopBeastTimer();
+            showToast("Modo Bestia", "Sesión completada. Eres imparable.");
+            if (window.navigator.vibrate) window.navigator.vibrate([500, 200, 500]);
+        }
+    }, 1000);
+});
+
+document.getElementById('btn-beast-pause')?.addEventListener('click', stopBeastTimer);
 
