@@ -986,7 +986,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    overflow: hidden;
+    /* Removed overflow:hidden to allow dynamic typography to breathe without clipping */
 }
 
 #life-grid {

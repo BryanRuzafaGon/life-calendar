@@ -40,9 +40,9 @@ function renderGrid(weeksLived, totalWeeks) {
     const availH = container.clientHeight || 450;
     
     // Mathematically deduce maximum dot size with decimals for max impact
-    const GAP = 1.0; // Tighter gap allows bigger dots
-    const PAD_X = 5; 
-    const PAD_Y = 35; // Extra padding reserved for the quote at the bottom
+    const GAP = 1.0; 
+    const PAD_X = 10; 
+    const PAD_Y = 90; // Reserve exactly enough space for Title (15px + 20px margin) + Quote (25px margin + 15px ht)
     
     const maxW = (availW - PAD_X - (COLS * GAP)) / COLS;
     const maxH = (availH - PAD_Y - (ROWS * GAP)) / ROWS;
