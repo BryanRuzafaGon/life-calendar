@@ -1,4 +1,4 @@
-const LIFE_EXPECTANCY_YEARS = 90;
+const LIFE_EXPECTANCY_YEARS = 80;
 
 let quotes = [];
 
@@ -73,27 +73,6 @@ function renderGrid(weeksLived, totalWeeks) {
         }
         
         grid.appendChild(dot);
-    }
-    
-    // Populate axis labels
-    const weekNums = document.getElementById('axis-week-nums');
-    if (weekNums) {
-        weekNums.innerHTML = '';
-        [4, 13, 26, 39, 52].forEach(w => {
-            const s = document.createElement('span');
-            s.textContent = w;
-            weekNums.appendChild(s);
-        });
-    }
-    
-    const ageNums = document.getElementById('axis-age-nums');
-    if (ageNums) {
-        ageNums.innerHTML = '';
-        [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => {
-            const s = document.createElement('span');
-            s.textContent = a;
-            ageNums.appendChild(s);
-        });
     }
 }
 
@@ -613,14 +592,12 @@ function renderStreakCalendar(completedDays, todayStr) {
     const container = document.getElementById('streak-calendar');
     if (!container) return;
 
-    // Create a two-row layout: Top row for letters, bottom for circles
+    // Create a row of flex columns so each letter sits perfectly above its circle
     container.innerHTML = `
-        <div id="streak-labels" style="display:flex; justify-content:space-between; width:100%; padding:0 20px; margin-bottom: 12px;"></div>
-        <div id="streak-dots" style="display:flex; justify-content:space-between; width:100%; padding:0 15px;"></div>
+        <div id="streak-wrapper" style="display:flex; justify-content:center; gap:16px; width:100%; padding: 5px 0;"></div>
     `;
     
-    const labelsContainer = document.getElementById('streak-labels');
-    const dotsContainer = document.getElementById('streak-dots');
+    const wrapper = document.getElementById('streak-wrapper');
     
     // Fixed Spanish Week: L M X J V S D
     const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
@@ -641,7 +618,14 @@ function renderStreakCalendar(completedDays, todayStr) {
         const isToday = dateStr === todayStr;
         const isFuture = d.toISOString().slice(0, 10) > todayStr;
         
-        // --- Row 1: Letter Label ---
+        // Day Column Wrapper
+        const col = document.createElement('div');
+        col.style.display = 'flex';
+        col.style.flexDirection = 'column';
+        col.style.alignItems = 'center';
+        col.style.gap = '8px';
+        
+        // --- 1. Letter Label ---
         const label = document.createElement('span');
         label.style.fontSize = '14px';
         label.style.fontWeight = isToday ? '800' : '500';
@@ -649,13 +633,12 @@ function renderStreakCalendar(completedDays, todayStr) {
         label.style.letterSpacing = '1px';
         
         if (isToday) {
-            label.innerHTML = `<span style="color:#fff; font-size:18px; line-height:0; position:relative; top:3px; margin-right:4px;">•</span>${daysOfWeek[i]}`;
+            label.innerHTML = `<span style="color:#fff; font-size:18px; line-height:0; position:relative; top:3px; margin-right:2px;">•</span>${daysOfWeek[i]}`;
         } else {
             label.textContent = daysOfWeek[i];
         }
-        labelsContainer.appendChild(label);
         
-        // --- Row 2: Hollow Circle Tracker ---
+        // --- 2. Hollow Circle Tracker ---
         const circle = document.createElement('div');
         circle.className = 'streak-circle-large';
         
@@ -668,7 +651,9 @@ function renderStreakCalendar(completedDays, todayStr) {
             circle.style.opacity = '0.2';
         }
         
-        dotsContainer.appendChild(circle);
+        col.appendChild(label);
+        col.appendChild(circle);
+        wrapper.appendChild(col);
     }
 }
 
