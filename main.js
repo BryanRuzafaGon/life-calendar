@@ -1323,6 +1323,25 @@ document.getElementById('btn-save-civic')?.addEventListener('click', () => {
     loadCivicSavings();
 });
 
+document.getElementById('btn-withdraw-civic')?.addEventListener('click', () => {
+    const amt = parseFloat(document.getElementById('civic-add-amount').value);
+    const note = document.getElementById('civic-add-note').value.trim();
+    if (!amt || amt <= 0) return;
+    
+    // Withdraw uses a negative amount
+    const history = JSON.parse(localStorage.getItem('civic_savings') || '[]');
+    history.push({
+        amount: -Math.abs(amt),
+        note: note || 'Retirada de fondos',
+        date: new Date().toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' })
+    });
+    localStorage.setItem('civic_savings', JSON.stringify(history));
+    
+    document.getElementById('civic-add-amount').value = '';
+    document.getElementById('civic-add-note').value = '';
+    loadCivicSavings();
+});
+
 // ============================================
 // DJ SET LOG
 // ============================================

@@ -384,16 +384,21 @@
             <div class="vault-container" style="margin-bottom:20px;">
                 <div class="civic-progress-header">
                     <span id="civic-saved-amount">€0</span>
-                    <span id="civic-goal-amount" class="civic-goal-text">€32,000 🏎️</span>
+                    <span id="civic-goal-amount" class="civic-goal-text">€50,000 🏎️</span>
                 </div>
                 <div class="civic-bar-track">
                     <div id="civic-bar-fill" class="civic-bar-fill" style="width:0%"></div>
                 </div>
-                <p id="civic-remaining" class="civic-remaining-text">€32,000 pendiente</p>
-                <div class="vault-input-area" style="margin-top:15px;">
-                    <input type="number" id="civic-add-amount" class="manifest-input" placeholder="Cantidad a añadir (€)">
-                    <input type="text" id="civic-add-note" class="manifest-input" placeholder="Nota (ej: Trabajo de este mes)">
-                    <button id="btn-save-civic" class="secondary-btn" style="border-color:rgba(255,215,0,0.3);color:#ffd700">➕ Añadir al Fondo</button>
+                <p id="civic-remaining" class="civic-remaining-text">€50,000 pendiente</p>
+                <div class="vault-input-area" style="margin-top:15px; display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="civic-add-amount" class="manifest-input" style="flex:1; margin-bottom:0;" placeholder="Monto (€)">
+                        <input type="text" id="civic-add-note" class="manifest-input" style="flex:2; margin-bottom:0;" placeholder="Nota (ej: Ingreso)">
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button id="btn-save-civic" class="secondary-btn" style="flex:1; border-color:rgba(255,215,0,0.3);color:#ffd700">➕ Añadir</button>
+                        <button id="btn-withdraw-civic" class="secondary-btn" style="flex:1; border-color:rgba(255,51,102,0.3);color:#ff3366">➖ Retirar</button>
+                    </div>
                 </div>
                 <div id="civic-history" class="vault-list-container" style="margin-top:15px;"></div>
             </div>
@@ -500,7 +505,9 @@
                 El <b style="color:#ffd700;">Honda Civic Type R</b> y el <b style="color:#ffd700;">Mainstage Nacional</b> no se regalan, se arrebatan con disciplina diaria.<br><br>
                 Renuncio a las excusas mediocres. Prometo no abandonar mi Manifiesto ningún día."
             </p>
-            <p style="font-size: 11px; color: #888; margin-bottom: 10px; text-transform: uppercase;">Escribe "acepto el precio" para firmar:</p>
+            <p style="font-size: 11px; color: #888; margin-bottom: 10px; text-transform: uppercase;">1. Grábate recitando este contrato:</p>
+            <input type="file" id="contract-video" accept="video/*" capture="user" class="manifest-input" style="padding:10px; margin-bottom: 15px;">
+            <p style="font-size: 11px; color: #888; margin-bottom: 10px; text-transform: uppercase;">2. Escribe "acepto el precio" para firmar:</p>
             <input type="text" id="contract-signature" class="manifest-input" placeholder="Escribe aquí..." style="text-align:center; font-weight:800; color:#ffd700;">
         </div>
     </div>
