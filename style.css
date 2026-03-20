@@ -938,10 +938,40 @@ body {
     padding: 5px;
 }
 
-.life-dot {
+/* Life dots */
+.dot {
+    width: 3.5px;
+    height: 3.5px;
     border-radius: 50%;
     flex-shrink: 0;
+    transition: opacity 0.1s;
 }
+
+.dot.lived   { background: rgba(255, 255, 255, 0.85); }
+.dot.current { background: #ffd700; box-shadow: 0 0 4px #ffd700; }
+.dot.future  { background: rgba(255, 255, 255, 0.08); }
+
+/* Dot shapes */
+.shape-square  .dot { border-radius: 1px; }
+.shape-rounded .dot { border-radius: 2px; }
+
+/* Group: decades — add gap every 10 years (520 weeks) — handled via JS but we can add visual grouping */
+.group-decades #life-grid { gap: 1.5px; }
+
+/* White theme */
+.theme-white                 { background: #fff !important; }
+.theme-white .dot.lived      { background: rgba(0,0,0,0.85); }
+.theme-white .dot.future     { background: rgba(0,0,0,0.08); }
+.theme-white .mock-time,
+.theme-white .mock-date,
+.theme-white #wallpaper-title,
+.theme-white #motivational-quote { color: rgba(0,0,0,0.8); }
+.theme-white .year-progress-info { color: rgba(0,0,0,0.4); }
+.theme-white .year-progress-track { background: rgba(0,0,0,0.1); }
+.theme-white #year-progress-fill  { background: rgba(0,0,0,0.6); }
+
+/* Footer none */
+.footer-none #bottom-content { display: none; }
 
 /* Bottom content – 150px safe zone from bottom */
 #bottom-content {

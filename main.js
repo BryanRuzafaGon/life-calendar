@@ -1,4 +1,4 @@
-const LIFE_EXPECTANCY_YEARS = 80;
+const LIFE_EXPECTANCY_YEARS = 90;
 
 let quotes = [];
 
