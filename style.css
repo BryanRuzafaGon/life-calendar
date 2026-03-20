@@ -977,8 +977,8 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 230px; /* Safe space below the clock */
-    bottom: 80px; /* Safe space above the flashlight */
+    top: 350px; /* Safe space below large lockscreen widgets */
+    bottom: 100px; /* Safe space above the flashlight */
     left: 0; right: 0;
     z-index: 2;
     display: flex;
