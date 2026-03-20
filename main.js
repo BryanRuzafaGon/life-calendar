@@ -1209,22 +1209,9 @@ initManifestationEngine();
 // ============================================
 const CIVIC_GOAL = 32000;
 let pinBuffer = '';
-let pinMode = 'unlock'; // 'setup' | 'unlock'
+const MASTER_PIN = '0214';
 
-async function hashPin(pin) {
-    const msgBuffer = new TextEncoder().encode(pin + '_lifeos_salt');
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-async function initPinLock() {
-    const storedHash = localStorage.getItem('pin_hash');
-    if (!storedHash) {
-        pinMode = 'setup';
-        document.getElementById('pin-lock-sub').textContent = 'Crea tu PIN de 4 dígitos';
-        document.getElementById('pin-lock-logo').textContent = '🛡️';
-    }
-    // Show the lock screen (always shown on load)
+function initPinLock() {
     document.getElementById('pin-lock-screen').style.display = 'flex';
 }
 
@@ -1239,7 +1226,7 @@ function updatePinDots(len) {
     }
 }
 
-async function processPinInput(digit) {
+function processPinInput(digit) {
     if (pinBuffer.length >= 4) return;
     pinBuffer += digit;
     updatePinDots(pinBuffer.length);
@@ -1249,25 +1236,16 @@ async function processPinInput(digit) {
     }
 }
 
-async function tryPin() {
-    const storedHash = localStorage.getItem('pin_hash');
-    const enteredHash = await hashPin(pinBuffer);
-    
-    if (pinMode === 'setup') {
-        // Save the new PIN
-        localStorage.setItem('pin_hash', enteredHash);
+function tryPin() {
+    if (pinBuffer === MASTER_PIN) {
         unlockApp();
     } else {
-        if (enteredHash === storedHash) {
-            unlockApp();
-        } else {
-            pinBuffer = '';
-            updatePinDots(0);
-            const inner = document.getElementById('pin-lock-inner');
-            inner.classList.add('pin-shake');
-            document.getElementById('pin-error').textContent = 'PIN incorrecto. Inténtalo de nuevo.';
-            inner.addEventListener('animationend', () => inner.classList.remove('pin-shake'), { once: true });
-        }
+        pinBuffer = '';
+        updatePinDots(0);
+        const inner = document.getElementById('pin-lock-inner');
+        inner.classList.add('pin-shake');
+        document.getElementById('pin-error').textContent = 'PIN incorrecto. Acceso denegado.';
+        inner.addEventListener('animationend', () => inner.classList.remove('pin-shake'), { once: true });
     }
 }
 
@@ -1292,8 +1270,8 @@ document.getElementById('pin-clear')?.addEventListener('click', () => {
     }
 });
 
-document.getElementById('pin-ok')?.addEventListener('click', async () => {
-    if (pinBuffer.length === 4) await tryPin();
+document.getElementById('pin-ok')?.addEventListener('click', () => {
+    if (pinBuffer.length === 4) tryPin();
 });
 
 // ============================================
