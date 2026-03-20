@@ -898,16 +898,6 @@ body {
     letter-spacing: -3px;
 }
 
-/* Wallpaper header – appears BELOW the 300px safe zone */
-#wallpaper-header {
-    position: absolute;
-    top: 300px;
-    left: 0; right: 0;
-    z-index: 3;
-    text-align: center;
-    padding: 8px 20px 4px;
-}
-
 #wallpaper-title {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
@@ -917,12 +907,9 @@ body {
     -webkit-text-fill-color: #ffffff;
     background: none;
     text-transform: capitalize;
-    margin-bottom: 3px;
+    margin-bottom: 20px;
+    text-align: center;
     text-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
-
-#wallpaper-subtitle {
-    display: none;
 }
 
 /* Axis labels */
@@ -990,13 +977,14 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 310px; /* Expand upwards natively */
-    bottom: 110px; /* Expand space downwards strictly for the grid UI block */
+    top: 230px; /* Safe space below the clock */
+    bottom: 80px; /* Safe space above the flashlight */
+    left: 0; right: 0;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center the grid+quote block vertically */
+    justify-content: center;
     width: 100%;
     overflow: hidden;
 }
