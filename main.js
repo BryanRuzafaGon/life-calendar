@@ -45,10 +45,9 @@ function renderGrid(weeksLived, totalWeeks) {
     
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotW}px)`;
-    grid.style.gap = `3px ${gapX}px`; // More vertical gap to stretch it out
+    grid.style.gap = '2px 1.5px'; // Tighter vertical gap
     grid.style.justifyContent = 'center';
-    grid.style.alignContent = 'space-between'; // Stretch vertically to fill container
-    grid.style.height = '100%';
+    grid.style.alignContent = 'start'; // Don't stretch vertically
     grid.style.padding = '0 10px';
     
     for (let i = 0; i < totalWeeks; i++) {

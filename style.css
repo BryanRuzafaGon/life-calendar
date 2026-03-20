@@ -995,13 +995,14 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 328px;
-    left: 0; right: 0;
-    bottom: 210px;
+    top: 340px;
+    bottom: 150px; /* Expand bottom space */
     z-index: 2;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Center the grid+quote block vertically */
+    width: 100%;
     overflow: hidden;
 }
 
