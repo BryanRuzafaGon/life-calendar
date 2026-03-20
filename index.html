@@ -29,7 +29,10 @@
             <header class="manifest-header">
                 <h1 id="manifest-name">Bryan Ruzafa Gonçalves</h1>
                 <input type="text" id="manifest-goal" class="goal-input" placeholder="Tu gran meta..." spellcheck="false">
-                <div class="streak-badge">🔥 <span id="streak-count">0</span> DÍAS</div>
+                <div class="badges-container">
+                    <div class="streak-badge">🔥 <span id="streak-count">0</span> DÍAS</div>
+                    <div id="rank-badge" class="rank-badge">DJ Promesa Local</div>
+                </div>
                 
                 <div class="streak-calendar" id="streak-calendar">
                     <!-- JS renders 7 days -->
@@ -201,6 +204,64 @@
             </div>
         </section>
 
+        <!-- ===== TAB 4: VISION BOARD & TIME CAPSULE ===== -->
+        <section id="view-vision" class="view-panel hidden">
+            <div class="stats-header">
+                <h2>TU VISIÓN</h2>
+                <p>Lo que ves y sientes, existe.</p>
+            </div>
+            
+            <!-- Vision Board Grid -->
+            <div class="vision-board-container">
+                <div class="vision-slot" id="vision-slot-1">
+                    <input type="file" id="vision-upload-1" accept="image/*" class="hidden-input">
+                    <label for="vision-upload-1" class="vision-placeholder" id="placeholder-1">
+                        <span>+ Sube tu Escenario 🎵</span>
+                    </label>
+                    <img id="vision-img-1" class="vision-img" style="display:none;" />
+                </div>
+                
+                <div class="vision-slot" id="vision-slot-2">
+                    <input type="file" id="vision-upload-2" accept="image/*" class="hidden-input">
+                    <label for="vision-upload-2" class="vision-placeholder" id="placeholder-2">
+                        <span>+ Sube tu Type R 🏎️</span>
+                    </label>
+                    <img id="vision-img-2" class="vision-img" style="display:none;" />
+                </div>
+            </div>
+
+            <!-- Time Capsule -->
+            <div class="time-capsule-container">
+                <h3>CÁPSULA DEL TIEMPO 🔐</h3>
+                <p class="capsule-sub">Carta a tu Yo del futuro. Inquebrantable.</p>
+                
+                <!-- Unsealed View -->
+                <div id="capsule-composer">
+                    <textarea id="capsule-text" class="manifest-input capsule-textarea" placeholder="Escribe tu carta aquí. Qué sentiste al lograrlo en 2030..."></textarea>
+                    <div style="display:flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                        <input type="date" id="capsule-date" value="2030-01-01" class="date-capsule">
+                        <button id="btn-seal-capsule" class="secondary-btn" style="border: 1px solid #ff3366; color: #ff3366;">Sellar y Bloquear</button>
+                    </div>
+                </div>
+
+                <!-- Sealed View -->
+                <div id="capsule-sealed" class="capsule-status-box" style="display:none;">
+                    <div class="sealed-lock">🔒</div>
+                    <div class="sealed-timer" id="sealed-timer">Bloqueado hasta 2030-01-01</div>
+                    <div class="blurred-text">
+                        Esta carta está sellada criptográficamente en tu mente y en tu móvil. Sigue acumulando días en el método 369.
+                    </div>
+                </div>
+                
+                <!-- Opened View -->
+                <div id="capsule-opened" class="capsule-status-box" style="display:none; border-color: #ffd700;">
+                    <div class="sealed-lock">🔓</div>
+                    <div class="sealed-timer" style="color:#ffd700">¡CÁPSULA ABIERTA!</div>
+                    <div id="capsule-content-clear" class="clear-text"></div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- BOTTOM NAVIGATION BAR -->
@@ -209,13 +270,17 @@
             <span class="nav-icon">🎯</span>
             <span class="nav-label">Manifiesto</span>
         </button>
+        <button class="nav-item" data-target="view-stats">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Archivo</span>
+        </button>
+        <button class="nav-item" data-target="view-vision">
+            <span class="nav-icon">👁️</span>
+            <span class="nav-label">Visión</span>
+        </button>
         <button class="nav-item" data-target="view-wallpaper">
             <span class="nav-icon">🖼️</span>
             <span class="nav-label">Fondo</span>
-        </button>
-        <button class="nav-item" data-target="view-stats">
-            <span class="nav-icon">📊</span>
-            <span class="nav-label">Stats</span>
         </button>
     </nav>
 

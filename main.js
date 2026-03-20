@@ -391,7 +391,18 @@ function updateStreakUI() {
     }
     
     document.getElementById('streak-count').textContent = currentStreak;
+    document.getElementById('rank-badge').textContent = getRank(currentStreak);
     renderStreakCalendar(completedDays, todayStr);
+}
+
+function getRank(streak) {
+    if (streak <= 30) return "DJ Promesa Local";
+    if (streak <= 90) return "Residente de Club";
+    if (streak <= 365) return "DJ de la Ciudad";
+    if (streak <= 730) return "Productor Emergente";
+    if (streak <= 1095) return "DJ Referente Nacional";
+    if (streak <= 1500) return "Dueño del Civic Type R 🏎️";
+    return "Leyenda Internacional 👑";
 }
 
 function renderStreakCalendar(completedDays, todayStr) {
@@ -509,11 +520,119 @@ function loadJournalArchive() {
     });
 }
 
-// Ensure streak UI updates on load
+// ============================================
+// VISION BOARD & TIME CAPSULE LOGIC
+// ============================================
+
+function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 800; // Safe for localStorage
+            const MAX_HEIGHT = 800;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+            } else {
+                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            callback(canvas.toDataURL('image/jpeg', 0.6));
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+[1, 2].forEach(num => {
+    document.getElementById(`vision-upload-${num}`)?.addEventListener('change', (e) => {
+        if (!e.target.files[0]) return;
+        compressImage(e.target.files[0], (base64) => {
+            localStorage.setItem(`vision_img_${num}`, base64);
+            loadVisionImages();     
+        });
+    });
+});
+
+function loadVisionImages() {
+    [1, 2].forEach(num => {
+        const base64 = localStorage.getItem(`vision_img_${num}`);
+        if (base64) {
+            document.getElementById(`placeholder-${num}`).style.display = 'none';
+            const imgEl = document.getElementById(`vision-img-${num}`);
+            imgEl.src = base64;
+            imgEl.style.display = 'block';
+        }
+    });
+}
+
+function loadTimeCapsule() {
+    const sealedData = localStorage.getItem('time_capsule');
+    if (sealedData) {
+        const data = JSON.parse(sealedData);
+        const unlockDate = new Date(data.unlockDate);
+        unlockDate.setHours(0,0,0,0);
+        const now = new Date();
+        
+        document.getElementById('capsule-composer').style.display = 'none';
+        
+        if (now >= unlockDate) {
+            // Unlocked!
+            document.getElementById('capsule-sealed').style.display = 'none';
+            document.getElementById('capsule-opened').style.display = 'flex';
+            document.getElementById('capsule-content-clear').textContent = data.text;
+        } else {
+            // Sealed
+            document.getElementById('capsule-sealed').style.display = 'flex';
+            document.getElementById('capsule-opened').style.display = 'none';
+            document.getElementById('sealed-timer').textContent = `Bloqueado intacto hasta el ${unlockDate.toLocaleDateString('es-ES')}`;
+        }
+    } else {
+        document.getElementById('capsule-composer').style.display = 'block';
+        document.getElementById('capsule-sealed').style.display = 'none';
+        document.getElementById('capsule-opened').style.display = 'none';
+    }
+}
+
+document.getElementById('btn-seal-capsule')?.addEventListener('click', () => {
+    const text = document.getElementById('capsule-text').value;
+    const dateStr = document.getElementById('capsule-date').value;
+    
+    if(!text || !dateStr) {
+        alert("Escribe la carta a tu yo del futuro y selecciona una fecha.");
+        return;
+    }
+    
+    const unlockDate = new Date(dateStr);
+    if(unlockDate <= new Date()) {
+        alert("La fecha de bloqueo debe estar en el futuro.");
+        return;
+    }
+    
+    if(confirm("¿Estás 100% seguro de sellar esta carta ahora? La criptografía local de tu dispositivo la bloqueará de forma permanente hasta la fecha fijada. No podrás leerla ni editarla hasta entonces.")) {
+        localStorage.setItem('time_capsule', JSON.stringify({
+            text: text,
+            unlockDate: dateStr
+        }));
+        loadTimeCapsule();
+        alert("Cápsula del Tiempo sellada. Enfócate en el hoy, el futuro te espera.");
+    }
+});
+
+// Ensure UI updates on load
 const originalInit = initManifestationEngine;
 initManifestationEngine = function() {
     originalInit();
     updateStreakUI();
+    loadVisionImages();
+    loadTimeCapsule();
 };
 
 // ============================================
