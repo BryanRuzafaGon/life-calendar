@@ -838,3 +838,315 @@ body {
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+/* ===================== WALLPAPER GENERATOR ===================== */
+#view-wallpaper {
+    padding-top: 20px;
+    gap: 30px;
+    overflow-y: auto;
+}
+
+.iphone-14-pro-max {
+    width: 393px;
+    height: 852px;
+    background: #000;
+    border-radius: 47px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 0 8px #1a1a1a, 0 0 0 10px #2a2a2a, 0 30px 80px rgba(0,0,0,0.8);
+    flex-shrink: 0;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 65%, rgba(0,0,0,0.5) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* iOS mock UI – top safe zone (300px reserved for clock/widgets) */
+#ios-mock-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 60px;
+    pointer-events: none;
+}
+
+.mock-date {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.mock-time {
+    font-size: 72px;
+    font-weight: 200;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+    letter-spacing: -3px;
+}
+
+/* Wallpaper header – appears BELOW the 300px safe zone */
+#wallpaper-header {
+    position: absolute;
+    top: 300px;
+    left: 0; right: 0;
+    z-index: 3;
+    text-align: center;
+    padding: 8px 20px 4px;
+}
+
+#wallpaper-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.85);
+    text-transform: lowercase;
+}
+
+/* Life grid */
+#grid-container {
+    position: absolute;
+    top: 326px;
+    left: 0; right: 0;
+    bottom: 170px;  /* Bottom safe zone buffer */
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#life-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 2px;
+    padding: 5px;
+}
+
+.life-dot {
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Bottom content – 150px safe zone from bottom */
+#bottom-content {
+    position: absolute;
+    bottom: 150px;
+    left: 0; right: 0;
+    z-index: 3;
+    padding: 0 30px;
+    text-align: center;
+}
+
+#quote-container { margin-bottom: 16px; }
+
+#motivational-quote {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.year-progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.year-progress-track {
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+#year-progress-fill {
+    height: 100%;
+    background: rgba(255,255,255,0.6);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+/* iOS home indicator */
+#ios-home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 3px;
+    z-index: 5;
+}
+
+/* Settings Panel */
+.settings-panel {
+    width: 393px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    flex-shrink: 0;
+    margin-bottom: 90px;
+}
+
+.panel-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.panel-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.stats-panel {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.input-group input[type="date"],
+.input-group input[type="text"],
+.input-group input[type="number"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus { border-color: rgba(255,215,0,0.4); }
+
+.help-text {
+    font-size: 11px;
+    color: var(--muted2);
+    margin-top: 6px;
+}
+
+.segment-control {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.segment-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 9px;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.segment-btn.active {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.primary-btn {
+    flex: 1;
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.primary-btn:hover { background: #e0e0e0; }
+
+.actions .secondary-btn {
+    flex: 1;
+    padding: 14px;
+}
