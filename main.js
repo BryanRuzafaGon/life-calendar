@@ -526,21 +526,51 @@ const NOTI_MESSAGES = {
         "Buenos días, referente nacional. Arranca el día con foco puro. 🎧",
         "Cada día que cumples estás más cerca de reventar la pista. Escribe las 3. 🔥",
         "Tu imperio empieza en la mañana. Sella tu destino 3 veces. 🌅",
-        "Mete primera marcha hoy. 3 intenciones para programar tu éxito inminente."
+        "Mete primera marcha hoy. 3 intenciones para programar tu éxito inminente.",
+        "Abre los ojos, alza el mentón. Eres el próximo DJ TOP de España. Empieza con 3.",
+        "Ese Type R huele a nuevo, pero exige disciplina hoy. Escribe tus 3 manifestaciones.",
+        "El universo recompensa a los que madrugan por sus sueños. 3 veces, dale.",
+        "La paciencia forja referentes. La pereza forja mediocres. Sigue tu racha de 🔥.",
+        "Escucha el rugir del motor de tu futuro Type R en tu cabeza. Siéntate y escribe 3.",
+        "No hay excusas para quien está destinado a pinchar frente a miles. 3 intenciones ahora.",
+        "Que la primera acción del día sea construir tu imperio musical. 3 veces.",
+        "Imagina aparcar ese Honda Civic Type R en el VIP de tu festival. Haz tus 3 frases.",
+        "La disciplina matutina hace al maestro de la mesa de mezclas. Aumenta tu racha hoy.",
+        "¿Quieres ser referente nacional? Compórtate como uno desde la primera hora. 3 metas."
     ],
     afternoon: [
         "Mitad del día. Mantén la frecuencia alta, futuro DJ Top Nacional. 🎵",
         "No bajes el ritmo. Tu Honda Civic te espera en la meta. Entra y refuerza tu mente (6).",
         "Tu imperio se construye en las horas en que los demás descansan. Adelante.",
         "6 veces. Recuérdale al subconsciente quién va a liderar la escena de este país.",
-        "Que tu racha no muera. Afianza tu tarde con tus 6 manifestaciones de poder de fuego."
+        "Que tu racha no muera. Afianza tu tarde con tus 6 manifestaciones de poder de fuego.",
+        "El sol sigue arriba y tu sueño también. Escribe 6 frases para programar el universo.",
+        "Visualiza tus manos tocando los CDJs frente a todo el país. Repite 6 veces tu realidad.",
+        "El Type R tiene que acelerar ahora. No dejes caer el día. 6 repeticiones de éxito.",
+        "Mientras otros pierden el tiempo, tú construyes tu leyenda como DJ. 6 veces.",
+        "La consistencia de la tarde define al referente nacional. Que nada te detenga ahora.",
+        "Seis intentos para hackear la realidad. Manifiesta tu Civic Type R brillando en tufa.",
+        "Siente la música correr por tus venas. Plasma tu destino 6 veces sin dudar.",
+        "Mantén el fuego prendido. Tu racha exige que rellenes estas 6 cajas de intenciones.",
+        "Que esta tarde te acerque un paso más al escenario principal. Escribe las 6.",
+        "Seis confirmaciones de que nada ni nadie te apartará del Type R y la música."
     ],
     night: [
         "Hora de cerrar el día. Escribe 9 veces tu destino y siente ese volante del Type R.",
         "Antes de dormir, sella tu racha 🔥. 9 intenciones para consagrarte en la cima.",
         "El universo escucha en el silencio. Completa el ciclo 3-6-9 y apaga la mesa de mezclas como un rey.",
         "Tus sueños ya son realidad. 9 manifestaciones directas para grabar el Type R en tu mente libre.",
-        "Último empujón estoico. No dejes que la disciplina flaquee hoy."
+        "Último empujón estoico. No dejes que la disciplina flaquee hoy.",
+        "Cierra el candado y asegúrate tu racha. 9 veces para dormir con mentalidad de n1.",
+        "Miles de personas corearán tu nombre, pero todo empieza esta noche. Escribe las 9.",
+        "Imagina el sonido del motor VTEC antes de dormir. Escribe tus últimas 9 intenciones.",
+        "9 afirmaciones que trabajarán en tu subconsciente mientras duermes. Protégete.",
+        "No te defraudes. Termina el maldito día como un ganador. 9 veces tu grandeza.",
+        "Siente el tacto frío del cambio de marchas del Type R. Plasma tu victoria (x9).",
+        "Solo los referentes nacionales aguantan hasta el final del día con el método 369.",
+        "Tu racha te necesita para sobrevivir mañana. Arrasa hoy con 9 afirmaciones perfectas.",
+        "Convierte el sueño en materia. Tus cajas están vacías. Llénalas 9 veces y descansa.",
+        "El maestro ha terminado su set. Cierra la noche con broche de oro. Las 9 últimas."
     ]
 };
 
