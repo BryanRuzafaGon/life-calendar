@@ -42,16 +42,17 @@ function renderGrid(weeksLived, totalWeeks) {
     const availW = container.clientWidth || 340;
     const availH = container.clientHeight || 356;
     
-    // Fit dots with 1px gap so they fill evenly
-    const dotW = Math.floor((availW - 20) / COLS);
-    const dotH = Math.floor((availH - 20) / ROWS);
-    const dotSize = Math.max(2, Math.min(dotW, dotH) - 1);
-    const gap = 1;
+    // Fit dots with no gap to maximize size
+    const PAD = 4;
+    const dotW = Math.floor((availW - PAD) / COLS);
+    const dotH = Math.floor((availH - PAD) / ROWS);
+    const dotSize = Math.max(3, Math.min(dotW, dotH));
+    const gap = 0;
     
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
     grid.style.gap = `${gap}px`;
-    grid.style.padding = '10px';
+    grid.style.padding = `${PAD / 2}px`;
     
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
