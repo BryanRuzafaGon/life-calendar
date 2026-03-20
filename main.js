@@ -35,27 +35,34 @@ function renderGrid(weeksLived, totalWeeks) {
     
     const COLS = 52;
     const ROWS = Math.ceil(totalWeeks / COLS);
-    
-    const container = document.getElementById('grid-container');
+        const container = document.getElementById('grid-container');
     const availW = container.clientWidth || 340;
+    const availH = container.clientHeight || 450;
     
-    const PAD = 4;
-    const gapX = 1;
-    const dotW = Math.max(2, Math.floor((availW - PAD - (gapX * COLS)) / COLS));
+    // Mathematically deduce maximum dot size to fit all rows and cols without clipping
+    const GAP = 1.5;
+    const PAD_X = 20; 
+    const PAD_Y = 50; // Extra padding reserved for the quote at the bottom
+    
+    const maxW = (availW - PAD_X - (COLS * GAP)) / COLS;
+    const maxH = (availH - PAD_Y - (ROWS * GAP)) / ROWS;
+    
+    // We floor it so it snaps to clean pixel shapes and doesn't blur
+    const dotSize = Math.max(2, Math.floor(Math.min(maxW, maxH)));
     
     grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotW}px)`;
-    grid.style.gap = '2px 1.5px'; // Tighter vertical gap
+    grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
+    grid.style.gap = `${GAP}px`; 
     grid.style.justifyContent = 'center';
-    grid.style.alignContent = 'start'; // Don't stretch vertically
-    grid.style.padding = '0 10px';
+    grid.style.alignContent = 'center'; 
+    grid.style.padding = '0';;
     
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
-        dot.style.width = `${dotW}px`; // Exact square
-        dot.style.height = `${dotW}px`; // Exact square
-        dot.style.borderRadius = '50%'; // Make dots perfectly round
+        dot.style.width = `${dotSize}px`; // Exact square
+        dot.style.height = `${dotSize}px`; // Exact square
+        dot.style.borderRadius = '50%'; // Perfectly round
         
         if (i < weeksLived) {
             dot.classList.add('lived');

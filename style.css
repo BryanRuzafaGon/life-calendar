@@ -922,12 +922,7 @@ body {
 }
 
 #wallpaper-subtitle {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 300;
-    font-size: 9px;
-    letter-spacing: 2.5px;
-    color: rgba(255,255,255,0.28);
-    text-transform: uppercase;
+    display: none;
 }
 
 /* Axis labels */
@@ -995,8 +990,8 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 340px;
-    bottom: 150px; /* Expand bottom space */
+    top: 310px; /* Expand upwards natively */
+    bottom: 110px; /* Expand space downwards strictly for the grid UI block */
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -1018,9 +1013,9 @@ body {
     transition: opacity 0.1s;
 }
 
-.dot.lived   { background: rgba(200, 200, 200, 0.80); }
-.dot.current { background: #ffd700; box-shadow: 0 0 4px rgba(255,215,0,0.7); border-radius: 50%; }
-.dot.future  { background: rgba(255, 255, 255, 0.05); }
+.dot.lived   { background: rgba(255, 255, 255, 0.85); }
+.dot.current { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.8); border-radius: 50%; }
+.dot.future  { background: rgba(255, 255, 255, 0.15); }
 
 /* Dot shapes */
 .shape-square  .dot { border-radius: 1px; }
