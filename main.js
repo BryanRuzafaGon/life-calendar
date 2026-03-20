@@ -392,6 +392,11 @@ function updateStreakUI() {
     
     document.getElementById('streak-count').textContent = currentStreak;
     document.getElementById('rank-badge').textContent = getRank(currentStreak);
+    
+    const faderPercentage = Math.min((currentStreak / 100) * 100, 100);
+    const knob = document.getElementById('streak-fader-knob');
+    if (knob) knob.style.left = `${faderPercentage}%`;
+    
     renderStreakCalendar(completedDays, todayStr);
 }
 
@@ -822,6 +827,22 @@ setInterval(() => {
     }
 }, 3000);
 
+// 5. Contract (First App Launch)
+function checkContract() {
+    if (!localStorage.getItem('contract_signed')) {
+        const modal = document.getElementById('contract-modal');
+        if(modal) {
+            modal.classList.remove('hidden');
+            document.getElementById('contract-signature')?.addEventListener('input', (e) => {
+                if (e.target.value.toLowerCase().trim() === 'acepto el precio') {
+                    localStorage.setItem('contract_signed', 'true');
+                    modal.classList.add('hidden');
+                }
+            });
+        }
+    }
+}
+
 
 // Ensure UI updates on load
 const originalInit = initManifestationEngine;
@@ -836,6 +857,7 @@ initManifestationEngine = function() {
     loadVault();
     initDailyPriceSequence(getTodayKey());
     checkTimeReflection(getTodayKey());
+    checkContract();
 };
 
 // ============================================
@@ -918,9 +940,21 @@ function triggerMotivationNotification(period) {
     const todayStr = getTodayKey();
     localStorage.setItem(`notified_${todayStr}_${period}`, 'true');
     
-    const msgs = NOTI_MESSAGES[period];
-    const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
-    const title = `Foco 369: ${period === 'morning' ? 'Mañana' : period === 'afternoon' ? 'Tarde' : 'Noche'}`;
+    let msgs = NOTI_MESSAGES[period];
+    let randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+    let title = `Foco 369: ${period === 'morning' ? 'Mañana' : period === 'afternoon' ? 'Tarde' : 'Noche'}`;
+    
+    // Future Bryan Override (20% chance)
+    if (Math.random() < 0.20) {
+        title = "📩 Mensaje de Bryan (2030):";
+        const futureMsgs = [
+            "Bro, acabo de aparcar el Type R en la entrada VIP del club. Gracias por no rendirte hoy.",
+            "Acabo de bajarme del Mainstage Nacional. Valieron la pena todas esas madrugadas de 369. Sigue dándole.",
+            "Me acaban de ingresar el cheque de la gira. El Honda Civic es nuestro. Cumple tu parte hoy.",
+            "El sonido del VTEC suena increíble cuando sales del club de madrugada. No tires la toalla hoy."
+        ];
+        randomMsg = futureMsgs[Math.floor(Math.random() * futureMsgs.length)];
+    }
     
     // UI Toast
     showToast(title, randomMsg);

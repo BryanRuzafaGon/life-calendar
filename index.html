@@ -33,6 +33,18 @@
                     <div class="streak-badge">🔥 <span id="streak-count">0</span> DÍAS</div>
                     <div id="rank-badge" class="rank-badge">DJ Promesa Local</div>
                 </div>
+
+                <!-- Pioneer Fader UI -->
+                <div class="fader-wrapper">
+                    <span class="fader-label-side">-∞</span>
+                    <div class="dj-fader-track">
+                        <div class="dj-fader-color-range"></div>
+                        <div class="dj-fader-knob" id="streak-fader-knob" style="left: 0%;">
+                            <div class="dj-fader-line"></div>
+                        </div>
+                    </div>
+                    <span class="fader-label-side">+10dB</span>
+                </div>
                 
                 <div class="streak-calendar" id="streak-calendar">
                     <!-- JS renders 7 days -->
@@ -345,6 +357,20 @@
             <h3 style="margin-top:20px; font-weight:800;">¿Sientes que estás más cerca hoy?</h3>
             <p style="font-size:13px; color:#888; line-height:1.4; margin:15px 0;">Analiza tu progreso. Si sigues igual que el día 1, algo en tus hábitos está fallando. El tiempo no perdona a nadie.</p>
             <button id="btn-close-checkpoint" class="secondary-btn" style="width:100%; margin-top:10px; border: 1px solid #ff3366; color: #ff3366;">Continuar forjando mi imperio</button>
+        </div>
+    </div>
+
+    <!-- Contract Modal (One Time) -->
+    <div id="contract-modal" class="modal-overlay hidden" style="background: rgba(0,0,0,0.98); z-index: 99999;">
+        <div class="modal-content" style="border-top: 5px solid #ff3366; text-align: center;">
+            <h1 style="color: #ff3366; font-size: 24px; margin-bottom: 5px;">⚖️ EL CONTRATO</h1>
+            <p style="color: #ccc; margin: 20px 0; line-height: 1.6; text-align: justify; font-size: 14px;">
+                "Yo, Bryan, declaro hoy que dejaré de ser un simple espectador de la vida.<br><br>
+                El <b style="color:#ffd700;">Honda Civic Type R</b> y el <b style="color:#ffd700;">Mainstage Nacional</b> no se regalan, se arrebatan con disciplina diaria.<br><br>
+                Renuncio a las excusas mediocres. Prometo no abandonar mi Manifiesto ningún día."
+            </p>
+            <p style="font-size: 11px; color: #888; margin-bottom: 10px; text-transform: uppercase;">Escribe "acepto el precio" para firmar:</p>
+            <input type="text" id="contract-signature" class="manifest-input" placeholder="Escribe aquí..." style="text-align:center; font-weight:800; color:#ffd700;">
         </div>
     </div>
 
