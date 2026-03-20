@@ -39,23 +39,24 @@ function renderGrid(weeksLived, totalWeeks) {
     const availW = container.clientWidth || 340;
     const availH = container.clientHeight || 450;
     
-    // Mathematically deduce maximum dot size to fit all rows and cols without clipping
-    const GAP = 1.5;
-    const PAD_X = 20; 
-    const PAD_Y = 50; // Extra padding reserved for the quote at the bottom
+    // Mathematically deduce maximum dot size with decimals for max impact
+    const GAP = 1.0; // Tighter gap allows bigger dots
+    const PAD_X = 5; 
+    const PAD_Y = 35; // Extra padding reserved for the quote at the bottom
     
     const maxW = (availW - PAD_X - (COLS * GAP)) / COLS;
     const maxH = (availH - PAD_Y - (ROWS * GAP)) / ROWS;
     
-    // We floor it so it snaps to clean pixel shapes and doesn't blur
-    const dotSize = Math.max(2, Math.floor(Math.min(maxW, maxH)));
+    // Allow 1 decimal point of precision for perfectly snug fit
+    const bestSize = Math.min(maxW, maxH);
+    const dotSize = Math.max(2, Math.floor(bestSize * 10) / 10);
     
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
     grid.style.gap = `${GAP}px`; 
     grid.style.justifyContent = 'center';
     grid.style.alignContent = 'center'; 
-    grid.style.padding = '0';;
+    grid.style.padding = '0';
     
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
@@ -81,9 +82,7 @@ function renderGrid(weeksLived, totalWeeks) {
         if (isEndOfWeek && yearIndex > 0 && yearIndex % 10 === 0 && i < totalWeeks - 1) {
             const divider = document.createElement('div');
             divider.style.gridColumn = '1 / -1';
-            divider.style.height = '1px';
-            divider.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-            divider.style.margin = '3px 0';
+            divider.style.height = '7px'; // Empty space to separate decades without lines
             grid.appendChild(divider);
         }
     }
