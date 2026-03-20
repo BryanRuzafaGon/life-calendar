@@ -33,32 +33,29 @@ function renderGrid(weeksLived, totalWeeks) {
     const grid = document.getElementById('life-grid');
     grid.innerHTML = '';
     
-    // Use 52 columns = one column per year visually
     const COLS = 52;
     const ROWS = Math.ceil(totalWeeks / COLS);
     
-    // Calculate available space from the container
     const container = document.getElementById('grid-container');
     const availW = container.clientWidth || 340;
-    const availH = container.clientHeight || 356;
     
-    // Fit dots with no gap to maximize size
     const PAD = 4;
-    const dotW = Math.floor((availW - PAD) / COLS);
-    const dotH = Math.floor((availH - PAD) / ROWS);
-    const dotSize = Math.max(3, Math.min(dotW, dotH));
-    const gap = 0;
+    const gapX = 1;
+    const dotW = Math.max(2, Math.floor((availW - PAD - (gapX * COLS)) / COLS));
     
     grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
-    grid.style.gap = `${gap}px`;
-    grid.style.padding = `${PAD / 2}px`;
+    grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotW}px)`;
+    grid.style.gap = `3px ${gapX}px`; // More vertical gap to stretch it out
+    grid.style.justifyContent = 'center';
+    grid.style.alignContent = 'space-between'; // Stretch vertically to fill container
+    grid.style.height = '100%';
+    grid.style.padding = '0 10px';
     
     for (let i = 0; i < totalWeeks; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
-        dot.style.width = `${dotSize}px`;
-        dot.style.height = `${dotSize}px`;
+        dot.style.width = '100%'; // Fill grid column
+        dot.style.height = `${dotW}px`; // Make it square
         
         if (i < weeksLived) {
             dot.classList.add('lived');
@@ -67,6 +64,14 @@ function renderGrid(weeksLived, totalWeeks) {
         } else {
             dot.classList.add('future');
         }
+        
+        // Decade Dividers (bottom border on the last year of every decade)
+        const yearIndex = Math.floor(i / 52);
+        if (yearIndex > 0 && yearIndex % 10 === 9) {
+            dot.style.borderBottom = '2px solid rgba(255,255,255,0.7)';
+            dot.style.marginBottom = '6px';
+        }
+        
         grid.appendChild(dot);
     }
     
@@ -607,14 +612,22 @@ function getRank(streak) {
 function renderStreakCalendar(completedDays, todayStr) {
     const container = document.getElementById('streak-calendar');
     if (!container) return;
-    container.innerHTML = '';
+
+    // Create a two-row layout: Top row for letters, bottom for circles
+    container.innerHTML = `
+        <div id="streak-labels" style="display:flex; justify-content:space-between; width:100%; padding:0 20px; margin-bottom: 12px;"></div>
+        <div id="streak-dots" style="display:flex; justify-content:space-between; width:100%; padding:0 15px;"></div>
+    `;
+    
+    const labelsContainer = document.getElementById('streak-labels');
+    const dotsContainer = document.getElementById('streak-dots');
     
     // Fixed Spanish Week: L M X J V S D
     const daysOfWeek = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
     const today = new Date();
     
-    // Calculate Monday of the current week
-    const currentDayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday...
+    // Calculate Monday
+    const currentDayOfWeek = today.getDay();
     const diffToMonday = currentDayOfWeek === 0 ? -6 : 1 - currentDayOfWeek;
     const monday = new Date(today);
     monday.setDate(today.getDate() + diffToMonday);
@@ -628,22 +641,34 @@ function renderStreakCalendar(completedDays, todayStr) {
         const isToday = dateStr === todayStr;
         const isFuture = d.toISOString().slice(0, 10) > todayStr;
         
-        let circleClass = 'streak-circle';
-        let innerHtml = '';
+        // --- Row 1: Letter Label ---
+        const label = document.createElement('span');
+        label.style.fontSize = '14px';
+        label.style.fontWeight = isToday ? '800' : '500';
+        label.style.color = isToday ? '#fff' : 'rgba(255,255,255,0.4)';
+        label.style.letterSpacing = '1px';
+        
+        if (isToday) {
+            label.innerHTML = `<span style="color:#fff; font-size:18px; line-height:0; position:relative; top:3px; margin-right:4px;">•</span>${daysOfWeek[i]}`;
+        } else {
+            label.textContent = daysOfWeek[i];
+        }
+        labelsContainer.appendChild(label);
+        
+        // --- Row 2: Hollow Circle Tracker ---
+        const circle = document.createElement('div');
+        circle.className = 'streak-circle-large';
         
         if (isDone) {
-            circleClass += ' done';
-            innerHtml = '🔥';
+            circle.classList.add('done');
+            circle.innerHTML = '🔥';
         } else if (isToday) {
-            circleClass += ' today-pending';
+            circle.classList.add('today-pending');
+        } else if (isFuture) {
+            circle.style.opacity = '0.2';
         }
         
-        container.innerHTML += `
-            <div class="streak-day">
-                <span class="streak-letter" style="${isToday ? 'color:#fff' : ''}">${daysOfWeek[i]}</span>
-                <div class="${circleClass}" style="${isFuture ? 'opacity: 0.2' : ''}">${innerHtml}</div>
-            </div>
-        `;
+        dotsContainer.appendChild(circle);
     }
 }
 
@@ -1028,9 +1053,15 @@ function checkContract() {
         if(modal) {
             modal.classList.remove('hidden');
             document.getElementById('contract-signature')?.addEventListener('input', (e) => {
+                const vid = document.getElementById('contract-video');
                 if (e.target.value.toLowerCase().trim() === 'acepto el precio') {
-                    localStorage.setItem('contract_signed', 'true');
-                    modal.classList.add('hidden');
+                    if (vid && vid.files.length > 0) {
+                        localStorage.setItem('contract_signed', 'true');
+                        modal.classList.add('hidden');
+                    } else {
+                        alert('El juramento es inquebrantable. Sube el vídeo recitándolo primero.');
+                        e.target.value = '';
+                    }
                 }
             });
         }
