@@ -42,7 +42,7 @@ function renderGrid(weeksLived, totalWeeks) {
     // Mathematically deduce maximum dot size with decimals for max impact
     const GAP = 1.0; 
     const PAD_X = 10; 
-    const PAD_Y = 90; // Reserve exactly enough space for Title (15px + 20px margin) + Quote (25px margin + 15px ht)
+    const PAD_Y = 0; // No text padding needed anymore, use entire canvas
     
     const maxW = (availW - PAD_X - (COLS * GAP)) / COLS;
     const maxH = (availH - PAD_Y - (ROWS * GAP)) / ROWS;
@@ -71,6 +71,11 @@ function renderGrid(weeksLived, totalWeeks) {
             dot.classList.add('current');
         } else {
             dot.classList.add('future');
+        }
+        
+        // Emphasize the birthday week of every year with light blue
+        if (i % 52 === 0) {
+            dot.classList.add('bday-week');
         }
         
         grid.appendChild(dot);
