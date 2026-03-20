@@ -43,7 +43,7 @@ function renderGrid(weeksLived, totalWeeks) {
     const availH = container.clientHeight || 356;
     
     // Fit dots with 1px gap so they fill evenly
-    const dotW = Math.floor((availW - 20) / COLS); // 20px padding
+    const dotW = Math.floor((availW - 20) / COLS);
     const dotH = Math.floor((availH - 20) / ROWS);
     const dotSize = Math.max(2, Math.min(dotW, dotH) - 1);
     const gap = 1;
@@ -67,6 +67,27 @@ function renderGrid(weeksLived, totalWeeks) {
             dot.classList.add('future');
         }
         grid.appendChild(dot);
+    }
+    
+    // Populate axis labels
+    const weekNums = document.getElementById('axis-week-nums');
+    if (weekNums) {
+        weekNums.innerHTML = '';
+        [4, 13, 26, 39, 52].forEach(w => {
+            const s = document.createElement('span');
+            s.textContent = w;
+            weekNums.appendChild(s);
+        });
+    }
+    
+    const ageNums = document.getElementById('axis-age-nums');
+    if (ageNums) {
+        ageNums.innerHTML = '';
+        [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => {
+            const s = document.createElement('span');
+            s.textContent = a;
+            ageNums.appendChild(s);
+        });
     }
 }
 

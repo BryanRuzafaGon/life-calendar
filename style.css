@@ -849,7 +849,7 @@ body {
 .iphone-14-pro-max {
     width: 393px;
     height: 852px;
-    background: #000;
+    background: #09090b;
     border-radius: 47px;
     overflow: hidden;
     position: relative;
@@ -909,13 +909,86 @@ body {
 
 #wallpaper-title {
     font-family: 'Outfit', sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 13px;
-    letter-spacing: 3px;
-    color: rgba(255,255,255,0.78) !important;
-    text-transform: lowercase;
-    -webkit-text-fill-color: rgba(255,255,255,0.78);
+    letter-spacing: 2px;
+    color: rgba(224, 224, 224, 0.85) !important;
+    -webkit-text-fill-color: rgba(224, 224, 224, 0.85);
     background: none;
+    text-transform: none;
+    margin-bottom: 3px;
+}
+
+#wallpaper-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: rgba(255,255,255,0.28);
+    text-transform: uppercase;
+}
+
+/* Axis labels */
+#axis-week {
+    position: absolute;
+    z-index: 3;
+    top: 312px;
+    left: 0; right: 0;
+    text-align: right;
+    padding-right: 38px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.2);
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+}
+
+#axis-age {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.2);
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+    width: 60px;
+    text-align: center;
+    transform-origin: center;
+}
+
+.axis-numbers {
+    position: absolute;
+    z-index: 3;
+    top: 321px;
+    left: 32px; right: 32px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 6px;
+    color: rgba(255,255,255,0.18);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.axis-numbers-left {
+    position: absolute;
+    z-index: 3;
+    left: 12px;
+    top: 330px;
+    bottom: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 6px;
+    color: rgba(255,255,255,0.18);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    padding: 2px 0;
 }
 
 #grid-container {
@@ -937,16 +1010,14 @@ body {
 
 /* Life dots */
 .dot {
-    width: 3.5px;
-    height: 3.5px;
-    border-radius: 50%;
+    border-radius: 2px;
     flex-shrink: 0;
     transition: opacity 0.1s;
 }
 
-.dot.lived   { background: rgba(255, 255, 255, 0.85); }
-.dot.current { background: #ffd700; box-shadow: 0 0 4px #ffd700; }
-.dot.future  { background: rgba(255, 255, 255, 0.08); }
+.dot.lived   { background: rgba(200, 200, 200, 0.80); }
+.dot.current { background: #ffd700; box-shadow: 0 0 4px rgba(255,215,0,0.7); border-radius: 50%; }
+.dot.future  { background: rgba(255, 255, 255, 0.05); }
 
 /* Dot shapes */
 .shape-square  .dot { border-radius: 1px; }
@@ -980,41 +1051,46 @@ body {
     text-align: center;
 }
 
-#quote-container { margin-bottom: 16px; }
+#quote-container { margin-bottom: 12px; }
 
 #motivational-quote {
     font-family: 'Outfit', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 300;
-    color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.38);
     letter-spacing: 0.5px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-style: italic;
+}
+
+/* Progress bar minimal */
+#year-progress-container {
+    margin-top: 8px;
 }
 
 .year-progress-info {
     display: flex;
     justify-content: space-between;
     font-family: 'Outfit', sans-serif;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 5px;
+    color: rgba(255,255,255,0.22);
+    margin-bottom: 4px;
     text-transform: uppercase;
 }
 
 .year-progress-track {
-    height: 2px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 1px;
     overflow: hidden;
 }
 
 #year-progress-fill {
     height: 100%;
-    background: rgba(255,255,255,0.6);
-    border-radius: 2px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 1px;
     transition: width 0.5s ease;
 }
 
