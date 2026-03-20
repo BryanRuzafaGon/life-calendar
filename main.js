@@ -1054,3 +1054,227 @@ document.getElementById('btn-enable-notifications')?.addEventListener('click', a
 
 // Call init at the end
 initManifestationEngine();
+
+// ============================================
+// PIN LOCK SYSTEM
+// ============================================
+const CIVIC_GOAL = 32000;
+let pinBuffer = '';
+let pinMode = 'unlock'; // 'setup' | 'unlock'
+
+async function hashPin(pin) {
+    const msgBuffer = new TextEncoder().encode(pin + '_lifeos_salt');
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function initPinLock() {
+    const storedHash = localStorage.getItem('pin_hash');
+    if (!storedHash) {
+        pinMode = 'setup';
+        document.getElementById('pin-lock-sub').textContent = 'Crea tu PIN de 4 dígitos';
+        document.getElementById('pin-lock-logo').textContent = '🛡️';
+    }
+    // Show the lock screen (always shown on load)
+    document.getElementById('pin-lock-screen').style.display = 'flex';
+}
+
+function updatePinDots(len) {
+    for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`pd-${i}`);
+        if (i < len) {
+            dot.classList.add('filled');
+        } else {
+            dot.classList.remove('filled');
+        }
+    }
+}
+
+async function processPinInput(digit) {
+    if (pinBuffer.length >= 4) return;
+    pinBuffer += digit;
+    updatePinDots(pinBuffer.length);
+    
+    if (pinBuffer.length === 4) {
+        setTimeout(() => tryPin(), 80);
+    }
+}
+
+async function tryPin() {
+    const storedHash = localStorage.getItem('pin_hash');
+    const enteredHash = await hashPin(pinBuffer);
+    
+    if (pinMode === 'setup') {
+        // Save the new PIN
+        localStorage.setItem('pin_hash', enteredHash);
+        unlockApp();
+    } else {
+        if (enteredHash === storedHash) {
+            unlockApp();
+        } else {
+            pinBuffer = '';
+            updatePinDots(0);
+            const inner = document.getElementById('pin-lock-inner');
+            inner.classList.add('pin-shake');
+            document.getElementById('pin-error').textContent = 'PIN incorrecto. Inténtalo de nuevo.';
+            inner.addEventListener('animationend', () => inner.classList.remove('pin-shake'), { once: true });
+        }
+    }
+}
+
+function unlockApp() {
+    const screen = document.getElementById('pin-lock-screen');
+    screen.style.opacity = '0';
+    screen.style.transition = 'opacity 0.4s ease';
+    setTimeout(() => screen.style.display = 'none', 400);
+    loadPrivateSection();
+}
+
+// Keypad events
+document.querySelectorAll('.pin-key[data-n]').forEach(btn => {
+    btn.addEventListener('click', () => processPinInput(btn.dataset.n));
+});
+
+document.getElementById('pin-clear')?.addEventListener('click', () => {
+    if (pinBuffer.length > 0) {
+        pinBuffer = pinBuffer.slice(0, -1);
+        updatePinDots(pinBuffer.length);
+        document.getElementById('pin-error').textContent = '';
+    }
+});
+
+document.getElementById('pin-ok')?.addEventListener('click', async () => {
+    if (pinBuffer.length === 4) await tryPin();
+});
+
+// ============================================
+// CIVIC SAVINGS TRACKER
+// ============================================
+function loadCivicSavings() {
+    const history = JSON.parse(localStorage.getItem('civic_savings') || '[]');
+    const total = history.reduce((sum, e) => sum + e.amount, 0);
+    
+    const pct = Math.min((total / CIVIC_GOAL) * 100, 100);
+    document.getElementById('civic-saved-amount').textContent = `€${total.toLocaleString('es-ES')}`;
+    document.getElementById('civic-remaining').textContent = `€${Math.max(0, CIVIC_GOAL - total).toLocaleString('es-ES')} pendiente`;
+    
+    setTimeout(() => {
+        const fill = document.getElementById('civic-bar-fill');
+        if (fill) fill.style.width = `${pct}%`;
+    }, 100);
+    
+    const container = document.getElementById('civic-history');
+    if (!container) return;
+    container.innerHTML = '';
+    [...history].reverse().forEach(entry => {
+        const card = document.createElement('div');
+        card.className = 'vault-card';
+        card.innerHTML = `<div class="vault-date">${entry.date}</div>
+        <div class="vault-text" style="display:flex;justify-content:space-between;">
+            <span>${entry.note || 'Sin nota'}</span>
+            <span style="color:#ffd700;font-weight:800;">+€${entry.amount}</span>
+        </div>`;
+        container.appendChild(card);
+    });
+}
+
+document.getElementById('btn-save-civic')?.addEventListener('click', () => {
+    const amt = parseFloat(document.getElementById('civic-add-amount').value);
+    const note = document.getElementById('civic-add-note').value.trim();
+    if (!amt || amt <= 0) return;
+    
+    const history = JSON.parse(localStorage.getItem('civic_savings') || '[]');
+    history.push({
+        amount: amt,
+        note: note,
+        date: new Date().toLocaleDateString('es-ES', { day:'numeric', month:'short', year:'numeric' })
+    });
+    localStorage.setItem('civic_savings', JSON.stringify(history));
+    
+    document.getElementById('civic-add-amount').value = '';
+    document.getElementById('civic-add-note').value = '';
+    loadCivicSavings();
+});
+
+// ============================================
+// DJ SET LOG
+// ============================================
+let selectedVibe = '🔥';
+
+document.querySelectorAll('.vibe-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedVibe = btn.dataset.vibe;
+    });
+});
+
+function loadSetLog() {
+    const sets = JSON.parse(localStorage.getItem('dj_set_log') || '[]');
+    
+    const totalHours = sets.reduce((sum, s) => sum + (parseInt(s.duration) || 0), 0);
+    const totalEarned = sets.reduce((sum, s) => sum + (parseFloat(s.fee) || 0), 0);
+    
+    const el = (id) => document.getElementById(id);
+    if (el('sets-total')) el('sets-total').textContent = sets.length;
+    if (el('sets-hours')) el('sets-hours').textContent = `${Math.round(totalHours / 60)}h`;
+    if (el('sets-earnings')) el('sets-earnings').textContent = `€${totalEarned.toLocaleString('es-ES')}`;
+    
+    const container = el('set-log-list');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    [...sets].reverse().forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'set-card';
+        card.innerHTML = `
+            <div class="set-card-header">
+                <span class="set-card-venue">${s.venue || 'Sin nombre'}</span>
+                <span class="set-card-vibe">${s.vibe}</span>
+            </div>
+            <div class="set-card-meta">
+                <span>📅 ${s.date}</span>
+                ${s.duration ? `<span>⏱ ${s.duration} min</span>` : ''}
+                ${s.bpm ? `<span>🎵 ${s.bpm} BPM</span>` : ''}
+                ${s.fee ? `<span class="set-card-fee">💰 €${s.fee}</span>` : ''}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+    
+    // Default date to today
+    const dateInput = document.getElementById('set-date');
+    if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().split('T')[0];
+}
+
+document.getElementById('btn-save-set')?.addEventListener('click', () => {
+    const venue = document.getElementById('set-venue').value.trim();
+    if (!venue) return;
+    
+    const sets = JSON.parse(localStorage.getItem('dj_set_log') || '[]');
+    sets.push({
+        venue,
+        date: document.getElementById('set-date').value || new Date().toISOString().split('T')[0],
+        duration: document.getElementById('set-duration').value,
+        bpm: document.getElementById('set-bpm').value,
+        fee: document.getElementById('set-fee').value,
+        vibe: selectedVibe
+    });
+    localStorage.setItem('dj_set_log', JSON.stringify(sets));
+    
+    // Clear form
+    ['set-venue','set-duration','set-bpm','set-fee'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    loadSetLog();
+});
+
+function loadPrivateSection() {
+    loadCivicSavings();
+    loadSetLog();
+}
+
+// Init PIN lock
+initPinLock();
+

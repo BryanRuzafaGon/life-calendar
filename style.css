@@ -1253,3 +1253,282 @@ body {
     flex: 1;
     padding: 14px;
 }
+
+/* ===================== PIN LOCK SCREEN ===================== */
+#pin-lock-screen {
+    position: fixed;
+    inset: 0;
+    background: #060608;
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pin-lock-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 280px;
+}
+
+#pin-lock-logo { font-size: 48px; margin-bottom: 5px; }
+
+#pin-lock-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+#pin-lock-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: -8px;
+}
+
+#pin-dots {
+    display: flex;
+    gap: 16px;
+    margin: 8px 0;
+}
+
+.pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25);
+    background: transparent;
+    transition: all 0.15s;
+}
+
+.pin-dot.filled {
+    background: #ffd700;
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+#pin-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.pin-key {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.07);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: 'Outfit', sans-serif;
+    height: 70px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pin-key:active {
+    background: rgba(255,215,0,0.15);
+    border-color: rgba(255,215,0,0.3);
+    transform: scale(0.94);
+}
+
+#pin-ok {
+    background: rgba(255,215,0,0.12);
+    border-color: rgba(255,215,0,0.3);
+    color: #ffd700;
+    font-size: 24px;
+}
+
+#pin-clear { font-size: 18px; color: rgba(255,255,255,0.5); }
+
+#pin-error {
+    color: #ff3366;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    min-height: 20px;
+    text-align: center;
+}
+
+.pin-shake {
+    animation: pinShake 0.3s ease;
+}
+
+@keyframes pinShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+/* ===================== ZONA PRIVADA ===================== */
+
+/* Civic Progress Bar */
+.civic-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.civic-progress-header span:first-child {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.civic-goal-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+}
+
+.civic-bar-track {
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.civic-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #ffd700, #ff8c00);
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.civic-remaining-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Set Log Form */
+.set-log-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.set-vibe-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.set-vibe-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    flex: 1;
+}
+
+.vibe-btn {
+    background: transparent;
+    border: 2px solid transparent;
+    font-size: 22px;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.vibe-btn.active {
+    border-color: rgba(255,215,0,0.5);
+    background: rgba(255,215,0,0.1);
+    transform: scale(1.15);
+}
+
+/* Set Stats Summary */
+.set-summary {
+    display: flex;
+    gap: 10px;
+}
+
+.set-stat-box {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.set-stat-box span {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.set-stat-box small {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Set Log card */
+.set-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 10px;
+}
+
+.set-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.set-card-venue {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.set-card-vibe { font-size: 20px; }
+
+.set-card-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.set-card-meta span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+}
+
+.set-card-fee {
+    color: #00e676 !important;
+}

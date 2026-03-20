@@ -19,6 +19,36 @@
 </head>
 <body>
 
+<!-- PIN LOCK SCREEN -->
+<div id="pin-lock-screen">
+    <div id="pin-lock-inner">
+        <div id="pin-lock-logo">🔒</div>
+        <h2 id="pin-lock-title">Life OS</h2>
+        <p id="pin-lock-sub">Introduce tu PIN</p>
+        <div id="pin-dots">
+            <div class="pin-dot" id="pd-0"></div>
+            <div class="pin-dot" id="pd-1"></div>
+            <div class="pin-dot" id="pd-2"></div>
+            <div class="pin-dot" id="pd-3"></div>
+        </div>
+        <div id="pin-keypad">
+            <button class="pin-key" data-n="1">1</button>
+            <button class="pin-key" data-n="2">2</button>
+            <button class="pin-key" data-n="3">3</button>
+            <button class="pin-key" data-n="4">4</button>
+            <button class="pin-key" data-n="5">5</button>
+            <button class="pin-key" data-n="6">6</button>
+            <button class="pin-key" data-n="7">7</button>
+            <button class="pin-key" data-n="8">8</button>
+            <button class="pin-key" data-n="9">9</button>
+            <button class="pin-key" id="pin-clear">⌫</button>
+            <button class="pin-key" data-n="0">0</button>
+            <button class="pin-key" id="pin-ok">✓</button>
+        </div>
+        <p id="pin-error"></p>
+    </div>
+</div>
+
     <!-- APP CONTAINER -->
     <main id="app-container">
         <!-- Notificaciones Internas -->
@@ -317,6 +347,70 @@
             </div>
         </section>
 
+        <!-- ===== TAB 5: ZONA PRIVADA ===== -->
+        <section id="view-private" class="view-panel hidden">
+            
+            <!-- Hucha del Type R -->
+            <div class="stats-header">
+                <h2>🏎️ HUCHA DEL TYPE R</h2>
+                <p>Cada euro cuenta. El Civic te espera.</p>
+            </div>
+            <div class="vault-container" style="margin-bottom:20px;">
+                <div class="civic-progress-header">
+                    <span id="civic-saved-amount">€0</span>
+                    <span id="civic-goal-amount" class="civic-goal-text">€32,000 🏎️</span>
+                </div>
+                <div class="civic-bar-track">
+                    <div id="civic-bar-fill" class="civic-bar-fill" style="width:0%"></div>
+                </div>
+                <p id="civic-remaining" class="civic-remaining-text">€32,000 pendiente</p>
+                <div class="vault-input-area" style="margin-top:15px;">
+                    <input type="number" id="civic-add-amount" class="manifest-input" placeholder="Cantidad a añadir (€)">
+                    <input type="text" id="civic-add-note" class="manifest-input" placeholder="Nota (ej: Trabajo de este mes)">
+                    <button id="btn-save-civic" class="secondary-btn" style="border-color:rgba(255,215,0,0.3);color:#ffd700">➕ Añadir al Fondo</button>
+                </div>
+                <div id="civic-history" class="vault-list-container" style="margin-top:15px;"></div>
+            </div>
+
+            <hr class="separator">
+
+            <!-- DJ Set Log -->
+            <div class="stats-header">
+                <h2>🎛️ HISTORIAL DE SETS</h2>
+                <p>Tu discografía personal. Cada set te acerca más.</p>
+            </div>
+            <div class="vault-container">
+                <div class="set-log-form">
+                    <input type="text" id="set-venue" class="manifest-input" placeholder="Venue / Lugar">
+                    <div style="display:flex;gap:10px;">
+                        <input type="date" id="set-date" class="manifest-input" style="flex:1;">
+                        <input type="number" id="set-duration" class="manifest-input" style="flex:1;" placeholder="Dur. (min)">
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <input type="number" id="set-bpm" class="manifest-input" style="flex:1;" placeholder="BPM">
+                        <input type="number" id="set-fee" class="manifest-input" style="flex:1;" placeholder="Cache (€)">
+                    </div>
+                    <div class="set-vibe-row">
+                        <span class="set-vibe-label">Feeling:</span>
+                        <button class="vibe-btn active" data-vibe="🔥">🔥</button>
+                        <button class="vibe-btn" data-vibe="😎">😎</button>
+                        <button class="vibe-btn" data-vibe="😐">😐</button>
+                        <button class="vibe-btn" data-vibe="💣">💣</button>
+                    </div>
+                    <button id="btn-save-set" class="secondary-btn" style="width:100%;border-color:rgba(0,230,118,0.3);color:#00e676;">Guardar Set 💾</button>
+                </div>
+
+                <!-- Set Stats Summary -->
+                <div class="set-summary">
+                    <div class="set-stat-box"><span id="sets-total">0</span><small>Sets Totales</small></div>
+                    <div class="set-stat-box"><span id="sets-hours">0h</span><small>Horas en Cabina</small></div>
+                    <div class="set-stat-box"><span id="sets-earnings">€0</span><small>Total Ganado</small></div>
+                </div>
+
+                <div id="set-log-list" class="vault-list-container" style="margin-top:15px;"></div>
+            </div>
+        </section>
+
     </main>
 
     <!-- BOTTOM NAVIGATION BAR -->
@@ -336,6 +430,10 @@
         <button class="nav-item" data-target="view-wallpaper">
             <span class="nav-icon">🖼️</span>
             <span class="nav-label">Fondo</span>
+        </button>
+        <button class="nav-item" data-target="view-private">
+            <span class="nav-icon">🔐</span>
+            <span class="nav-label">Privado</span>
         </button>
     </nav>
 
