@@ -68,14 +68,13 @@ function renderGrid(weeksLived, totalWeeks) {
         if (i < weeksLived) {
             dot.classList.add('lived');
         } else if (i === weeksLived) {
-            dot.classList.add('current');
+            if (i % 52 === 0) {
+                dot.classList.add('current-bday');
+            } else {
+                dot.classList.add('current');
+            }
         } else {
             dot.classList.add('future');
-        }
-        
-        // Emphasize the birthday week of every year with light blue
-        if (i % 52 === 0) {
-            dot.classList.add('bday-week');
         }
         
         grid.appendChild(dot);
