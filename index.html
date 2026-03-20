@@ -40,9 +40,22 @@
             </header>
 
             <div class="method-369-container">
-                <h2>EL MÉTODO 369</h2>
-                <p class="method-subtitle">Escribe tu intención 3 veces por la mañana, 6 por la tarde y 9 por la noche (21:15).</p>
-                
+                <h2>EL MÉTODO 3-6-9</h2>
+                <p class="method-subtitle">Reprogramación subconsciente estoica. Siente que ya es tuyo.</p>
+
+                <!-- El Precio a Pagar (Random) -->
+                <div id="daily-price-container" class="daily-price-box" style="display:none;">
+                    <div class="price-header">
+                        <h3>⚡ EL PRECIO A PAGAR HOY</h3>
+                        <button id="btn-edit-prices" class="icon-btn">⚙️</button>
+                    </div>
+                    <p class="price-sub">El universo exige acción aleatoria hoy. Cúmplelo o tu racha morirá.</p>
+                    <div id="daily-price-list" class="price-list">
+                        <!-- JS renders checkboxes here -->
+                    </div>
+                </div>
+
+                <!-- Bloque MAÑANA -->
                 <div id="blocks-container">
                     <div class="block-section locked" id="block-morning">
                         <div class="block-header">
@@ -60,13 +73,19 @@
                         <div class="inputs-container" id="inputs-afternoon"></div>
                     </div>
                     
-                    <div class="block-section locked" id="block-night">
-                        <div class="block-header">
-                            <h3>🌌 NOCHE (9)</h3>
-                            <span class="lock-status">Bloqueado hasta 21:15</span>
-                        </div>
-                        <div class="inputs-container" id="inputs-night"></div>
+                    <!-- Bloque NOCHE -->
+                <div class="block-section locked" id="block-night">
+                    <div class="block-header">
+                        <h3>🌌 NOCHE (9)</h3>
+                        <span class="lock-status">Bloqueado hasta 21:15</span>
                     </div>
+                    <div class="inputs-container" id="inputs-night"></div>
+                    
+                    <div class="real-action-box" id="night-action-container">
+                        <label class="action-label">¿Qué paso real di hoy hacia mi meta?</label>
+                        <input type="text" id="night-real-action" class="manifest-input action-input" placeholder="Ej: Practiqué transiciones 2 horas...">
+                    </div>
+                </div>
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
@@ -195,6 +214,23 @@
 
         <!-- ===== TAB 3: STATS / HISTORIAL ===== -->
         <section id="view-stats" class="view-panel hidden">
+            <!-- Bóveda de Evidencias -->
+            <div class="vault-container">
+                <div class="stats-header">
+                    <h2>🏛️ BÓVEDA DE EVIDENCIAS</h2>
+                    <p>Registra solo victorias. El progreso atrae progreso.</p>
+                </div>
+                <div class="vault-input-area">
+                    <input type="text" id="vault-input" class="manifest-input vault-input-field" placeholder="Ej: Hoy pinché mi primer set pagado...">
+                    <button id="btn-save-vault" class="secondary-btn vault-btn">Guardar Victoria</button>
+                </div>
+                <div id="vault-list" class="vault-list-container">
+                    <!-- JS renderiza las victorias aquí -->
+                </div>
+            </div>
+
+            <hr class="separator" style="border-top:1px solid #222; margin: 30px 20px;">
+
             <div class="stats-header">
                 <h2>EL ARCHIVO</h2>
                 <p>Tu historial estoico de disciplina.</p>
@@ -283,6 +319,34 @@
             <span class="nav-label">Fondo</span>
         </button>
     </nav>
+
+    <!-- ===== MODALS ===== -->
+    
+    <!-- Edit Price Pool Modal -->
+    <div id="price-pool-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Tus Precios (Hábitos)</h3>
+            <p style="font-size:12px; color:#aaa; margin-bottom:15px;">Añade acciones que te acerquen a ser DJ y al Type R. La app te obligará a cumplir algunas al azar.</p>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <input type="text" id="new-price-input" class="manifest-input" style="margin-bottom:0;" placeholder="Ej: Subir 1 Reel">
+                <button id="btn-add-price" class="secondary-btn" style="padding: 0 20px;">+</button>
+            </div>
+            <ul id="price-pool-list" class="price-pool-list"></ul>
+            <button id="btn-close-price-modal" class="secondary-btn" style="width:100%; margin-top:20px;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- 30-Day Checkpoint Modal -->
+    <div id="checkpoint-modal" class="modal-overlay hidden">
+        <div class="modal-content checkpoint-content">
+            <h1 style="color:#ffd700; margin-bottom:10px;">⏳ DÍA <span id="checkpoint-day">30</span></h1>
+            <p style="color:#ccc;">Hace 30 días escribiste esto:</p>
+            <div class="checkpoint-quote" id="checkpoint-original-goal">"..."</div>
+            <h3 style="margin-top:20px; font-weight:800;">¿Sientes que estás más cerca hoy?</h3>
+            <p style="font-size:13px; color:#888; line-height:1.4; margin:15px 0;">Analiza tu progreso. Si sigues igual que el día 1, algo en tus hábitos está fallando. El tiempo no perdona a nadie.</p>
+            <button id="btn-close-checkpoint" class="secondary-btn" style="width:100%; margin-top:10px; border: 1px solid #ff3366; color: #ff3366;">Continuar forjando mi imperio</button>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="main.js"></script>

@@ -626,6 +626,203 @@ document.getElementById('btn-seal-capsule')?.addEventListener('click', () => {
     }
 });
 
+// ============================================
+// PHASE 6: DEEP PSYCHOLOGY MODULES
+// ============================================
+
+// 1. Dynamic Vision Background
+function applyVisionBackground() {
+    const img1 = localStorage.getItem('vision_img_1');
+    const img2 = localStorage.getItem('vision_img_2');
+    const pool = [];
+    if (img1) pool.push(img1);
+    if (img2) pool.push(img2);
+    
+    if (pool.length > 0) {
+        const chosen = pool[Math.floor(Math.random() * pool.length)];
+        document.body.style.backgroundImage = `linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.95)), url('${chosen}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    }
+}
+
+// 2. Evidence Vault
+function loadVault() {
+    const vaultList = JSON.parse(localStorage.getItem('vault_list') || '[]');
+    const container = document.getElementById('vault-list');
+    if(!container) return;
+    
+    container.innerHTML = '';
+    vaultList.reverse().forEach(v => {
+        const div = document.createElement('div');
+        div.className = 'vault-card';
+        div.innerHTML = `
+            <div class="vault-date">${v.date}</div>
+            <div class="vault-text">${v.text}</div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+document.getElementById('btn-save-vault')?.addEventListener('click', () => {
+    const input = document.getElementById('vault-input');
+    const text = input.value.trim();
+    if (!text) return;
+    
+    const vaultList = JSON.parse(localStorage.getItem('vault_list') || '[]');
+    vaultList.push({
+        date: new Date().toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }),
+        text: text
+    });
+    localStorage.setItem('vault_list', JSON.stringify(vaultList));
+    input.value = '';
+    loadVault();
+});
+
+// 3. El Precio a Pagar (Random Tracker)
+const DEFAULT_PRICES = ["Practicar CDJs / Mezcla 1 hora", "Subir 1 Clip a Redes", "Networking musical online", "Ahorrar algo para el Type R"];
+
+function loadPricePool() {
+    let pool = JSON.parse(localStorage.getItem('price_pool') || 'null');
+    if (!pool) {
+        pool = DEFAULT_PRICES;
+        localStorage.setItem('price_pool', JSON.stringify(pool));
+    }
+    return pool;
+}
+
+function renderPricePoolManager() {
+    const pool = loadPricePool();
+    const list = document.getElementById('price-pool-list');
+    if(!list) return;
+    list.innerHTML = '';
+    pool.forEach((val, idx) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${val}</span> <button class="btn-remove-price" data-idx="${idx}">×</button>`;
+        list.appendChild(li);
+    });
+    
+    document.querySelectorAll('.btn-remove-price').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = e.target.getAttribute('data-idx');
+            pool.splice(idx, 1);
+            localStorage.setItem('price_pool', JSON.stringify(pool));
+            renderPricePoolManager();
+        });
+    });
+}
+
+document.getElementById('btn-edit-prices')?.addEventListener('click', () => {
+    document.getElementById('price-pool-modal').classList.remove('hidden');
+    renderPricePoolManager();
+});
+document.getElementById('btn-close-price-modal')?.addEventListener('click', () => {
+    document.getElementById('price-pool-modal').classList.add('hidden');
+});
+document.getElementById('btn-add-price')?.addEventListener('click', () => {
+    const input = document.getElementById('new-price-input');
+    if (input.value.trim()) {
+        const pool = loadPricePool();
+        pool.push(input.value.trim());
+        localStorage.setItem('price_pool', JSON.stringify(pool));
+        input.value = '';
+        renderPricePoolManager();
+    }
+});
+
+function initDailyPriceSequence(todayStr) {
+    let dailyPrice = JSON.parse(localStorage.getItem(`daily_price_${todayStr}`) || 'null');
+    const container = document.getElementById('daily-price-container');
+    const list = document.getElementById('daily-price-list');
+    if(!list) return;
+    
+    if (!dailyPrice) {
+        const isActionDay = Math.random() < 0.5; // 50% chance
+        let selected = [];
+        if (isActionDay) {
+            const pool = loadPricePool();
+            if(pool.length > 0) {
+                const amnt = Math.floor(Math.random() * Math.min(3, pool.length)) + 1; 
+                const shuffled = [...pool].sort(() => 0.5 - Math.random());
+                selected = shuffled.slice(0, amnt).map(text => ({ text: text, done: false }));
+            }
+        }
+        dailyPrice = { items: selected };
+        localStorage.setItem(`daily_price_${todayStr}`, JSON.stringify(dailyPrice));
+    }
+    
+    if (dailyPrice.items.length > 0) {
+        container.style.display = 'block';
+        list.innerHTML = '';
+        dailyPrice.items.forEach((item, idx) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'price-checkbox-wrap';
+            wrap.innerHTML = `
+                <input type="checkbox" id="price-chk-${idx}" ${item.done ? 'checked' : ''}>
+                <label for="price-chk-${idx}">${item.text}</label>
+            `;
+            list.appendChild(wrap);
+            
+            wrap.querySelector('input').addEventListener('change', (e) => {
+                dailyPrice.items[idx].done = e.target.checked;
+                localStorage.setItem(`daily_price_${todayStr}`, JSON.stringify(dailyPrice));
+                updateStreakUI();
+            });
+        });
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+// 4. Modal de Reflexión Mensual (Checkpoint)
+function checkTimeReflection(todayStr) {
+    let firstDate = localStorage.getItem('first_manifest_date');
+    if (!firstDate) {
+        firstDate = todayStr;
+        localStorage.setItem('first_manifest_date', firstDate);
+        return;
+    }
+    
+    const d1 = new Date(firstDate);
+    const d2 = new Date();
+    d1.setHours(0,0,0,0);
+    d2.setHours(0,0,0,0);
+    
+    const diffTime = Math.abs(d2 - d1);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays > 0 && diffDays % 30 === 0) {
+        if (localStorage.getItem('checkpoint_shown_date') !== todayStr) {
+            document.getElementById('checkpoint-day').textContent = diffDays;
+            document.getElementById('checkpoint-original-goal').textContent = `"${localStorage.getItem('manifest_goal') || 'Evolucionar.'}"`;
+            document.getElementById('checkpoint-modal').classList.remove('hidden');
+        }
+    }
+}
+
+document.getElementById('btn-close-checkpoint')?.addEventListener('click', () => {
+    localStorage.setItem('checkpoint_shown_date', getTodayKey());
+    document.getElementById('checkpoint-modal').classList.add('hidden');
+});
+
+// Night Action Input save behavior
+document.getElementById('night-real-action')?.addEventListener('input', (e) => {
+    const todayStr = getTodayKey();
+    const actions = JSON.parse(localStorage.getItem(`night_action_history`) || '{}');
+    actions[todayStr] = e.target.value;
+    localStorage.setItem(`night_action_history`, JSON.stringify(actions));
+});
+// Load nightly action if previously filled
+setInterval(() => {
+    const na = document.getElementById('night-real-action');
+    if(na && !na.value && document.activeElement !== na) {
+        const acts = JSON.parse(localStorage.getItem(`night_action_history`) || '{}');
+        if(acts[getTodayKey()]) na.value = acts[getTodayKey()];
+    }
+}, 3000);
+
+
 // Ensure UI updates on load
 const originalInit = initManifestationEngine;
 initManifestationEngine = function() {
@@ -633,6 +830,12 @@ initManifestationEngine = function() {
     updateStreakUI();
     loadVisionImages();
     loadTimeCapsule();
+    
+    // Phase 6 inits
+    applyVisionBackground();
+    loadVault();
+    initDailyPriceSequence(getTodayKey());
+    checkTimeReflection(getTodayKey());
 };
 
 // ============================================

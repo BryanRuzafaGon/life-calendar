@@ -915,3 +915,170 @@ button:hover {
     font-style: italic;
     border-left: 3px solid #ffd700;
 }
+
+/* Phase 6 Tools: Modals, Vault, Daily Action */
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: #111;
+    border: 1px solid #333;
+    border-top: 5px solid #ffd700;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    text-align: left;
+}
+
+.checkpoint-content {
+    text-align: center;
+    border-top-color: #ff3366;
+}
+
+.checkpoint-quote {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+    font-style: italic;
+    color: #eee;
+    margin: 15px 0;
+    font-size: 15px;
+}
+
+.price-pool-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.price-pool-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #ddd;
+}
+
+.btn-remove-price {
+    background: transparent;
+    border: none;
+    color: #ff3366;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.daily-price-box {
+    background: #1a1a1a;
+    border: 1px dashed #ffd700;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.price-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.price-header h3 { font-size: 14px; font-weight: 800; color: #ffd700; }
+.icon-btn { background: transparent; border: none; color: #888; cursor: pointer; font-size: 16px; padding: 5px; }
+.price-sub { font-size: 11px; color: #888; margin-bottom: 12px; }
+
+.price-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.price-checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-checkbox-wrap input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ffd700;
+}
+
+.price-checkbox-wrap label {
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.real-action-box {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+    text-align: left;
+}
+
+.action-label {
+    display: block;
+    font-size: 12px;
+    color: #ffd700;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.action-input {
+    background: #111 !important;
+    border: 1px solid #ffd700 !important;
+}
+
+.vault-container {
+    padding: 0 20px;
+}
+
+.vault-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.vault-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vault-card {
+    background: #111;
+    border-left: 3px solid #00E676;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.vault-date { font-size: 10px; color: #888; margin-bottom: 5px; font-weight: 800; }
+.vault-text { font-size: 14px; color: #eee; }
