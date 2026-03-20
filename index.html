@@ -257,7 +257,11 @@
         <div class="actions">
             <button id="btn-save" class="primary-btn">Guardar y Actualizar</button>
             <button id="btn-export" class="secondary-btn">Descargar Fondo</button>
+            <button id="btn-save-icloud" class="secondary-btn" style="border-color: rgba(0, 122, 255, 0.5); color: #007AFF; width: 100%; margin-top: 8px;">
+                ☁️ Guardar en iCloud Drive
+            </button>
         </div>
+        <p id="icloud-status" style="font-size: 11px; color: #555; text-align: center; margin-top: 6px; display: none;"></p>
     </div>
         </section>
 
@@ -275,6 +279,28 @@
                 </div>
                 <div id="vault-list" class="vault-list-container">
                     <!-- JS renderiza las victorias aquí -->
+                </div>
+            </div>
+
+            <hr class="separator" style="border-top:1px solid #222; margin: 30px 20px;">
+
+            <!-- GitHub Habit Heatmap -->
+            <div class="stats-header">
+                <h2>🔥 HABIT HEATMAP</h2>
+                <p>Tu disciplina forjando el imperio dorado.</p>
+            </div>
+            <div class="heatmap-wrapper">
+                <div id="github-heatmap" class="github-heatmap">
+                    <!-- JS renders 52 columns x 7 rows -->
+                </div>
+                <div class="heatmap-legend">
+                    <span>Vago</span>
+                    <div class="heatmap-square"></div>
+                    <div class="heatmap-square l-1"></div>
+                    <div class="heatmap-square l-2"></div>
+                    <div class="heatmap-square l-3"></div>
+                    <div class="heatmap-square l-4"></div>
+                    <span>Máquina</span>
                 </div>
             </div>
 
