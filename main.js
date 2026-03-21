@@ -39,21 +39,14 @@ function renderGrid(weeksLived, totalWeeks) {
     const availW = container.clientWidth || 340;
     const availH = container.clientHeight || 450;
     
-    // Mathematically deduce maximum dot size with decimals for max impact
-    const GAP = 1.0; 
-    const PAD_X = 10; 
-    const PAD_Y = 0; // No text padding needed anymore, use entire canvas
+    const GAP = 1.0;
+    const PAD_X = 5; 
+    const PAD_Y = 0;
     
     const maxW = (availW - PAD_X - (COLS * GAP)) / COLS;
+    const maxH = (availH - PAD_Y - (ROWS * GAP)) / ROWS;
     
-    // Account for 7 decade dividers of 7px height each so the grid doesn't artificially stretch
-    const DECADE_DIVIDERS = Math.floor(LIFE_EXPECTANCY_YEARS / 10) - 1;
-    const DIVIDER_H = 7;
-    const maxH = (availH - PAD_Y - (ROWS * GAP) - (DECADE_DIVIDERS * DIVIDER_H)) / ROWS;
-    
-    // Allow 1 decimal point of precision for perfectly snug fit
-    const bestSize = Math.min(maxW, maxH);
-    const dotSize = Math.max(2, Math.floor(bestSize * 10) / 10);
+    const dotSize = Math.max(2, Math.floor(Math.min(maxW, maxH) * 10) / 10);
     
     grid.style.display = 'grid';
     grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;

@@ -977,16 +977,15 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 400px; /* Clear the tallest iOS lockscreen widget configs */
-    bottom: 100px;
+    top: 295px; /* Right below the widgets */
+    bottom: 90px;  /* Above the flashlight/camera bar */
     left: 0; right: 0;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Grid packs from the top, not centered */
+    justify-content: flex-start;
     width: 100%;
-    /* Removed overflow:hidden to allow dynamic typography to breathe without clipping */
 }
 
 #life-grid {
