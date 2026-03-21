@@ -59,7 +59,7 @@ function renderGrid(weeksLived, totalWeeks) {
     grid.style.gridTemplateColumns = `repeat(${COLS}, ${dotSize}px)`;
     grid.style.gap = `${GAP}px`; 
     grid.style.justifyContent = 'center';
-    grid.style.alignContent = 'center'; 
+    grid.style.alignContent = 'start'; // Pack rows tightly from top — prevents last row spreading
     grid.style.padding = '0';
     
     for (let i = 0; i < totalWeeks; i++) {

@@ -977,14 +977,14 @@ body {
 
 #grid-container {
     position: absolute;
-    top: 350px; /* Safe space below large lockscreen widgets */
-    bottom: 100px; /* Safe space above the flashlight */
+    top: 400px; /* Clear the tallest iOS lockscreen widget configs */
+    bottom: 100px;
     left: 0; right: 0;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Grid packs from the top, not centered */
     width: 100%;
     /* Removed overflow:hidden to allow dynamic typography to breathe without clipping */
 }
